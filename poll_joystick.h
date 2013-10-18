@@ -25,6 +25,8 @@ task pollJoystick() {
 			int tempJoyRight = DRIVE_JOY_RIGHT;
 			_slewJoy(tempJoyLeft);
 			_slewJoy(tempJoyRight);
-			wait1Msec(10);
+			setRequestedSpeed(tempJoyLeft, tempJoyRight);
+			//publishing to a button struct should be done here.
+			wait1Msec(JOY_POLL_DELAY);
 		}
 }
