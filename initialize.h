@@ -1,0 +1,3 @@
+void initializeRobot() {
+	return;
+}
