@@ -14,6 +14,7 @@
 
 #define DRIVE_JOY_LEFT joystick.joy1_y1;
 #define DRIVE_JOY_RIGHT joystick.joy1_y2;
+static const bool USE_LOG_SCALE=true;
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "initialize.h"
