@@ -15,9 +15,9 @@ int getRequestedSpeed(){ //getter method for requested speed
 	return driveSpeed;
 	}
 
-void setDriveMotors(int speed) { //set drive motor speed directly
-	motor[DRIVE_RIGHT] = speed;
-	motor[DRIVE_LEFT] = speed;
+void setDriveMotors(int l, int r) { //set drive motor speed directly
+	motor[DRIVE_RIGHT] = r;
+	motor[DRIVE_LEFT] = l;
 }
 
 void setDriveRight(int speed) { //set right speed directly

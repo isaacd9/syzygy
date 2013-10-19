@@ -9,10 +9,9 @@ task drivetrain() //this code is for the drive-train
 			if(curLeft==reqSpeed[0]&&curRight==reqSpeed[1]) { //check the speed is not the same as the current speed
 					abortTimeslice();
 				}
-				else {																					//set drive motors
-						setDriveLeft(reqSpeed[0]);
-						setDriveRight(reqSpeed[1]);
-					}
+			else {																					//set drive motors
+					setDriveMotors(reqSpeed[0], reqSpeed[1]);
+				}
 			wait1Msec(DRIVE_SET_DELAY);
 		}
 }

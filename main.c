@@ -16,7 +16,7 @@
 #define DRIVE_JOY_RIGHT joystick.joy1_y2
 #define JOY_POLL_DELAY 10
 #define DRIVE_SET_DELAY 10
-#define debugger writeDebugStreamLine;
+#define DEBUGGER writeDebugStreamLine;
 static const bool USE_LOG_SCALE=true;
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
