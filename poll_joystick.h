@@ -18,10 +18,6 @@ void _slewJoy(int &joyVal) { //modify direct input to log scale
 	}
 }
 
-bool checkButtons(int numButtons) {
-
-	}
-
 task pollJoystick() {
 	while(true) {
 			getJoystickSettings(joystick); //register joystick input

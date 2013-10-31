@@ -1,5 +1,4 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
-#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Motor,  motorA,          DRIVE_LEFT,    tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          DRIVE_RIGHT,   tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_1,     motorD,        tmotorTetrix, openLoop)
