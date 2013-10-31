@@ -1,5 +1,3 @@
-#include "drive_bootstrap.h" //bring in bootstrap functions
-
 const int nLogScale[17] =
 	{
 		0,   5,   9,   10,
@@ -8,6 +6,44 @@ const int nLogScale[17] =
 		60,  72,  85, 100,
 		100
 	};
+
+struct { //initalize structure to store requested speeds
+		int leftDrive;
+		int rightDrive;
+} _driveSpeed;
+
+_driveSpeed _driveRequestedSpeed;
+
+void _driveSetRequestedSpeed(int left, int right) { //setter function for requested speed
+		_driveRequestedSpeed.leftDrive=left;
+		_driveRequestedSpeed.rightDrive=right;
+	}
+
+int driveGetRequestedSpeed(){ //getter method for requested speed
+	int driveSpeed[2]= {_driveRequestedSpeed.leftDrive, _driveRequestedSpeed.rightDrive};
+	return driveSpeed;
+	}
+
+void _setDriveMotors(int l, int r) { //set drive motor speed directly
+	motor[DRIVE_RIGHT] = r;
+	motor[DRIVE_LEFT] = l;
+}
+
+void _setDriveRight(int speed) { //set right speed directly
+	motor[DRIVE_RIGHT] = speed;
+}
+
+void _setDriveLeft(int speed) { //set left speed directly
+	motor[DRIVE_LEFT] = speed;
+}
+
+int getDriveLeft() { //getter method for left drive
+	return motor[DRIVE_LEFT];
+	}
+
+int getDriveRight() { //getter method for right drive
+	return motor[DRIVE_RIGHT];
+}
 
 void _slewJoy(int &joyVal) { //modify direct input to log scale
 	//math gets done here
@@ -23,7 +59,7 @@ void _slewJoy(int &joyVal) { //modify direct input to log scale
 void setDrivetrain(int leftSpeed, int rightSpeed) {
 	_slewJoy(leftSpeed);
 	_slewJoy(rightSpeed);
-	setRequestedSpeed(leftSpeed, rightSpeed); //publishing to a button struct should be done here.
+	_driveSetRequestedSpeed(leftSpeed, rightSpeed); //publishing to a button struct should be done here.
 }
 
 //This is actually another task and should be started in main. I put the code that handles the DT in here too beacuse that's logically where it goes.
@@ -35,13 +71,13 @@ task drivetrain() //this code is for the drive-train
 			int curLeft= getDriveLeft(); //initalize current values for drive
 			int curRight= getDriveRight();
 
-			int *reqSpeed= getRequestedSpeed();
+			int *reqSpeed= driveGetRequestedSpeed();
 
 			if(curLeft==reqSpeed[0]&&curRight==reqSpeed[1]) { //check the speed is not the same as the current speed
 					wait1Msec(DRIVE_SET_DELAY);
 				}
 			else {																					//set drive motors
-					setDriveMotors(reqSpeed[0], reqSpeed[1]);
+					_setDriveMotors(reqSpeed[0], reqSpeed[1]);
 				}
 			wait1Msec(DRIVE_SET_DELAY);
 		}

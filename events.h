@@ -21,10 +21,11 @@ void onOpJoyMove(int left, int right) {
 
 	}
 
+//Binding goes in here. Each case corresponds to button-1
+
 void onDriveJoyPressed(int button) {
 		switch(button) {
 			case 0:
-				//Binding goes in here. Each case corresponds to button-1
 			break;
 
 			case 1:
