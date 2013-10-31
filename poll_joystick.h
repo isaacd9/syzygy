@@ -1,33 +1,45 @@
-const int nLogScale[17] =
-	{
-		0,   5,   9,   10,
-		12,  15,  18,  24,
-		30,  36,  43,  50,
-		60,  72,  85, 100,
-		100
-	};
+//init variables to store curr speed and dir
+int driveJoyLeft;
+int driveJoyRight;
 
-void _slewJoy(int &joyVal) { //modify direct input to log scale
-	//math gets done here
-	if (USE_LOG_SCALE) {
-		joyVal /= 8;
-		if (joyVal >= 0) //slew based on log val
-			joyVal = nLogScale[joyVal];
-		else
-			joyVal = - nLogScale[- joyVal];
-	}
-}
+int opJoyLeft;
+int opJoyRight;
+
+int lastDriveButtons[12]= {0,0,0,0,0,0,0,0,0,0,0,0}; //Store state
+int lastOpButtons[12]= {0,0,0,0,0,0,0,0,0,0,0,0}; //Store state
 
 task pollJoystick() {
 	while(true) {
-			getJoystickSettings(joystick); //register joystick input
-			int tempJoyLeft = DRIVE_JOY_LEFT;
-			int tempJoyRight = DRIVE_JOY_RIGHT;
-			_slewJoy(tempJoyLeft);
-			_slewJoy(tempJoyRight);
+				getJoystickSettings(joystick);
 
-			setRequestedSpeed(tempJoyLeft, tempJoyRight); //publishing to a button struct should be done here.
+				// Load stix into memory for this iteration
 
-			wait1Msec(JOY_POLL_DELAY);
+				driveJoyLeft = DRIVE_JOY_LEFT;
+				driveJoyRight = DRIVE_JOY_RIGHT;
+
+				opJoyLeft = OP_JOY_LEFT;
+				opJoyRight = OP_JOY_RIGHT;
+
+				onDriveJoyMove(driveJoyLeft, driveJoyRight); //These methods are stateless
+				onOpJoyMove(opJoyLeft, opJoyRight);
+
+				for(int i=0; i<12; i++) //Stateful implementation for the buttons
+				{
+					if(DRIVE_JOY_PRESSED(i+1)-lastDriveButtons[i] == 1) { //Call listeners
+							onDriveJoyPressed(i);
+						}
+					if(OP_JOY_PRESSED(i+1)-lastOpButtons[i] == 1) {
+							onOpJoyPressed(i);
+						}
+					if(DRIVE_JOY_PRESSED(i+1)-lastDriveButtons[i] == -1) {
+							onDriveJoyReleased(i);
+						}
+					if(OP_JOY_PRESSED(i+1)-lastOpButtons[i] == -1) {
+							onOpJoyReleased(i);
+						}
+					lastDriveButtons[i]=DRIVE_JOY_PRESSED(i+1); //Update state
+					lastOpButtons[i]=OP_JOY_PRESSED(i+1);
+				}
+				wait1Msec(JOY_POLL_DELAY);
 		}
 }

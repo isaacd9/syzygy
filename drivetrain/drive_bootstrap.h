@@ -28,10 +28,10 @@ void setDriveLeft(int speed) { //set left speed directly
 	motor[DRIVE_LEFT] = speed;
 }
 
-int getDriveLeft() {
+int getDriveLeft() { //getter method for left drive
 	return motor[DRIVE_LEFT];
 	}
 
-int getDriveRight() {
+int getDriveRight() { //getter method for right drive
 	return motor[DRIVE_RIGHT];
 }
