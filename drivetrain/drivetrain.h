@@ -1,3 +1,22 @@
+//API Facing function prototypes
+
+void setDrivetrain(int leftSpeed, int rightSpeed); //Main function for API call
+
+int driveGetRequestedSpeed();
+int getDriveLeft();
+int getDriveRight();
+
+//internal function prototypes
+
+void _driveSetRequestedSpeed(int left, int right);
+void _setDriveLeft(int speed);
+void _setDriveRight(int speed);
+void _setDriveMotors(int l, int r);
+
+void _slewJoy(int &joyVal);
+
+//declarations
+
 const int nLogScale[17] =
 	{
 		0,   5,   9,   10,
@@ -14,6 +33,7 @@ struct { //initalize structure to store requested speeds
 
 _driveSpeed _driveRequestedSpeed;
 
+//function bodies
 void _driveSetRequestedSpeed(int left, int right) { //setter function for requested speed
 		_driveRequestedSpeed.leftDrive=left;
 		_driveRequestedSpeed.rightDrive=right;
