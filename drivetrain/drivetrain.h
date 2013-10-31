@@ -56,29 +56,8 @@ void _slewJoy(int &joyVal) { //modify direct input to log scale
 	}
 }
 
-void setDrivetrain(int leftSpeed, int rightSpeed) {
+void setDrivetrain(int leftSpeed, int rightSpeed) { //This function is event facing
 	_slewJoy(leftSpeed);
 	_slewJoy(rightSpeed);
 	_driveSetRequestedSpeed(leftSpeed, rightSpeed); //publishing to a button struct should be done here.
-}
-
-//This is actually another task and should be started in main. I put the code that handles the DT in here too beacuse that's logically where it goes.
-//May replace DT task with procedure. No reason to do pub/sub except cleanliness and speed.
-
-task drivetrain() //this code is for the drive-train
-{
-	while(true) {
-			int curLeft= getDriveLeft(); //initalize current values for drive
-			int curRight= getDriveRight();
-
-			int *reqSpeed= driveGetRequestedSpeed();
-
-			if(curLeft==reqSpeed[0]&&curRight==reqSpeed[1]) { //check the speed is not the same as the current speed
-					wait1Msec(DRIVE_SET_DELAY);
-				}
-			else {																					//set drive motors
-					_setDriveMotors(reqSpeed[0], reqSpeed[1]);
-				}
-			wait1Msec(DRIVE_SET_DELAY);
-		}
 }

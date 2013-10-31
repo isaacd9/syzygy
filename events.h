@@ -3,13 +3,14 @@
 #include "drivetrain/drivetrain.h"
 
 //function prototypes
-void onDriveJoyMove(int left, int right);
-void onOpJoyMove(int left, int right);
 
-void onDriveJoyPressed(int button);
-void onOpJoyPressed(int button);
-void onDriveJoyReleased(int button);
-void onOpJoyReleased(int button);
+void onDriveJoyMove(int left, int right); //Binding for drive sticks
+void onOpJoyMove(int left, int right); //Binding for op sticks
+
+void onDriveJoyPressed(int button); //Bindings for drive joy button pressed
+void onOpJoyPressed(int button); //Bindings for op joy button pressed
+void onDriveJoyReleased(int button); //Bindings for drive joy released
+void onOpJoyReleased(int button); //Bindings for op joy released
 
 //Function declarations. Do late binding here!
 

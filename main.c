@@ -32,6 +32,22 @@ static const bool USE_LOG_SCALE=true;
 #include "initialize.h"
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
+//May replace DT task with procedure. No reason to do pub/sub except cleanliness and speed.
+
+task drivetrain() //this code is for the drive-train
+{
+	while(true) {
+			int curLeft= getDriveLeft(); //initalize current values for drive
+			int curRight= getDriveRight();
+
+			int *reqSpeed= driveGetRequestedSpeed();
+
+			if(curLeft!=reqSpeed[0]||curRight!=reqSpeed[1])	{		  //check the speed is not the same as the current speed
+					_setDriveMotors(reqSpeed[0], reqSpeed[1]);
+				}
+			wait1Msec(DRIVE_SET_DELAY);
+		}
+}
 
 task main() {
   initializeRobot();
