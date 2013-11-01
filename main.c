@@ -32,8 +32,8 @@ static const bool USE_LOG_SCALE=true;
 #include "initialize.h"
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
-//May replace DT task with procedure. No reason to do pub/sub except cleanliness and speed.
 
+//May replace DT task with procedure. No reason to do pub/sub except cleanliness and (speed?).
 task drivetrain() //this code is for the drive-train
 {
 	while(true) {
