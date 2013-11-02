@@ -28,6 +28,8 @@
 #define DEBUGGER writeDebugStreamLine;
 static const bool USE_LOG_SCALE=true;
 
+#define FLAG_SPEED 100
+
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "initialize.h"
 
