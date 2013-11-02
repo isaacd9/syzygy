@@ -1,7 +1,7 @@
 syzygy
 ======
 
-Code that powers the robot for FTC team 3231.
+code that powers the robot for FTC team 3231.
 
 In order to bind events to joystick commands, simply call the function within the appropriate case statement within the event handler function.
 
