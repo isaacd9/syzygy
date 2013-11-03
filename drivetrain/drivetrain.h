@@ -66,7 +66,6 @@ int getDriveRight() { //getter method for right drive
 }
 
 void _slewJoy(int &joyVal) { //modify direct input to log scale
-	//math gets done here
 	if (USE_LOG_SCALE) {
 		joyVal /= 8;
 		if (joyVal >= 0) //slew based on log val
