@@ -1,6 +1,6 @@
 //include subroutines here!
 
-#include "drivetrain/drivetrain.h"
+#include "drivetrain.h"
 #include "flag_raiser.h"
 
 //function prototypes

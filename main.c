@@ -1,6 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
 #pragma config(Motor,  motorA,          DRIVE_LEFT,    tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          DRIVE_RIGHT,   tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorC,          FLAG_RAISER,   tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_1,     motorD,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S1_C2_1,    servo1,               tServoNone)
@@ -25,7 +26,7 @@
 
 #define JOY_POLL_DELAY 10
 #define DRIVE_SET_DELAY 10
-#define DEBUGGER writeDebugStreamLine;
+#define DEBUGGER writeDebugStreamLine
 static const bool USE_LOG_SCALE=true;
 
 #define FLAG_SPEED 100
