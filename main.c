@@ -1,9 +1,8 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
-#pragma config(Motor,  motorA,          DRIVE_LEFT,    tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorB,          DRIVE_RIGHT,   tmotorNXT, PIDControl, encoder)
+#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Motor,  motorC,          FLAG_RAISER,   tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  mtr_S1_C1_1,     motorD,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C1_1,     DRIVE_LEFT,    tmotorNXT, PIDControl, reversed, encoder)
+#pragma config(Motor,  mtr_S1_C1_2,     DRIVE_RIGHT,   tmotorNXT, PIDControl, encoder)
 #pragma config(Servo,  srvo_S1_C2_1,    servo1,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_2,    servo2,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_3,    servo3,               tServoNone)
@@ -38,26 +37,10 @@ static const bool USE_LOG_SCALE=true;
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
 
-//May replace DT task with procedure. No reason to do pub/sub except cleanliness and (speed?).
-task drivetrain() //this code is for the drive-train
-{
-	while(true) {
-			int curLeft= getDriveLeft(); //initalize current values for drive
-			int curRight= getDriveRight();
-
-			int *reqSpeed= driveGetRequestedSpeed();
-
-			if(curLeft!=reqSpeed[0]||curRight!=reqSpeed[1])	{		  //check the speed is not the same as the current speed
-					_setDriveMotors(reqSpeed[0], reqSpeed[1]);
-				}
-			wait1Msec(DRIVE_SET_DELAY);
-		}
-}
-
 task main() {
   initializeRobot();
 	StartTask(pollJoystick); //Begin to poll joystick for input
-	StartTask(drivetrain);
+	//StartTask(drivetrain);
 
   while (true) {
 		wait1Msec(100);
