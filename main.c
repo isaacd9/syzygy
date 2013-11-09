@@ -1,5 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
+#pragma config(Motor,  motorA,          ARM_LEFT,      tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorB,          ARM_RIGHT,     tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,          FLAG_RAISER,   tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_1,     DRIVE_LEFT,    tmotorNXT, PIDControl, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     DRIVE_RIGHT,   tmotorNXT, PIDControl, encoder)

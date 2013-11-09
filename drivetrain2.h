@@ -11,11 +11,11 @@ void _setDriveLeft(int speed);
 void _setDriveRight(int speed);
 void _setDriveMotors(int l, int r);
 
-void _slewJoy(int &joyVal);
+void _slewDriveJoy(int &joyVal);
 
 //declarations
 
-const int nLogScale[17] =
+const int nDriveLogScale[17] =
 	{
 		0,   5,   9,   10,
 		12,  15,  18,  24,
@@ -47,18 +47,18 @@ int getDriveRight() { //getter method for right drive
 	return motor[DRIVE_RIGHT];
 }
 
-void _slewJoy(int &joyVal) { //modify direct input to log scale
+void _slewDriveJoy(int &joyVal) { //modify direct input to log scale
 	if (USE_LOG_SCALE) {
 		joyVal /= 8;
 		if (joyVal >= 0) //slew based on log val
-			joyVal = nLogScale[joyVal];
+			joyVal = nDriveLogScale[joyVal];
 		else
-			joyVal = - nLogScale[- joyVal];
+			joyVal = - nDriveLogScale[- joyVal];
 	}
 }
 
 void setDrivetrain(int leftSpeed, int rightSpeed) { //This function is event facing
-	_slewJoy(leftSpeed);
-	_slewJoy(rightSpeed);
+	_slewDriveJoy(leftSpeed);
+	_slewDriveJoy(rightSpeed);
 	_setDriveMotors(leftSpeed, rightSpeed); //publishing to a button struct should be done here.
 }

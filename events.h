@@ -2,6 +2,7 @@
 
 #include "drivetrain2.h"
 #include "flag_raiser.h"
+#include "arm.h"
 
 //function prototypes
 
@@ -21,7 +22,7 @@ void onDriveJoyMove(int left, int right) {
 	}
 
 void onOpJoyMove(int left, int right) {
-
+		setArm(left);
 	}
 
 //Binding goes in here. Each case corresponds to button-1
