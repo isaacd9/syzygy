@@ -7,7 +7,7 @@ In order to bind events to joystick commands, simply call the function within th
 
 For example, if I had some function called moveRobot() that moved the robot and I wished to bind it to when button 2 was clicked, it would go here:
 
-```
+```C++
 void onDriveJoyPressed(int button) {
 
 	...
