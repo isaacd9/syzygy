@@ -3,6 +3,8 @@
 #include "drivetrain2.h"
 #include "flag_raiser.h"
 #include "arm.h"
+#include "hanging.h"
+#include "intake.h"
 
 //function prototypes
 
@@ -23,6 +25,7 @@ void onDriveJoyMove(int left, int right) {
 
 void onOpJoyMove(int left, int right) {
 		setArm(left);
+		setIntake(right);
 	}
 
 //Binding goes in here. Each case corresponds to button-1
@@ -137,11 +140,9 @@ void onDriveJoyReleased(int button) {
 			break;
 
 			case 5:
-			stopFlag();
 			break;
 
 			case 6:
-			stopFlag();
 			break;
 
 			case 7:
@@ -183,9 +184,11 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 5:
+			stopFlag();
 			break;
 
 			case 6:
+			stopFlag();
 			break;
 
 			case 7:
