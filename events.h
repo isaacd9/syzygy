@@ -81,6 +81,7 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 1:
+			driveFlagBack();
 			break;
 
 			case 2:
@@ -94,7 +95,6 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 5:
-			driveFlagBack();
 			break;
 
 			case 6:
