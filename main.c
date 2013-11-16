@@ -5,7 +5,7 @@
 #pragma config(Motor,  motorC,          FLAG_RAISER,   tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_1,     DRIVE_LEFT,    tmotorNXT, PIDControl, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     DRIVE_RIGHT,   tmotorNXT, PIDControl, encoder)
-#pragma config(Servo,  srvo_S1_C2_1,    servo1,               tServoNone)
+#pragma config(Servo,  srvo_S1_C2_1,    HANG,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_2,    servo2,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_3,    servo3,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_4,    servo4,               tServoNone)
@@ -31,6 +31,8 @@
 static const bool USE_LOG_SCALE=true;
 
 #define FLAG_SPEED 100
+
+#define SERVO_HANG_POSITION 255
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "initialize.h"

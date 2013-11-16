@@ -27,7 +27,7 @@ void onOpJoyMove(int left, int right) {
 
 //Binding goes in here. Each case corresponds to button-1
 
-//Bidings here can be stateful
+//Bindings here can be stateful
 void onDriveJoyPressed(int button) {
 		switch(button) {
 			case 0:
