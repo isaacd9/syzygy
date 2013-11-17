@@ -1,6 +1,6 @@
 //definitions
-#define DRIVE_ENCODERS abs(nMotorEncoder[DRIVE_LEFT])+abs(nMotorEncoder[DRIVE_RIGHT])/2
-#define ARM_ENCODERS abs(nMotorEncoder[ARM_LEFT])+abs(nMotorEncoder[ARM_RIGHT])/2
+#define DRIVE_ENCODERS (abs(nMotorEncoder[DRIVE_LEFT])+abs(nMotorEncoder[DRIVE_RIGHT]))/2
+#define ARM_ENCODERS (abs(nMotorEncoder[ARM_LEFT])+abs(nMotorEncoder[ARM_RIGHT]))/2
 
 //includes
 #include "drivetrain2.h"
