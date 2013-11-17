@@ -13,7 +13,7 @@ void driveFlagForward()
 
 void driveFlagBack()
 {
-	motor[FLAG_RAISER] = -FLAG_SPEED; //defined in main
+	motor[FLAG_RAISER] = -(FLAG_SPEED); //defined in main
 }
 
 void stopFlag()

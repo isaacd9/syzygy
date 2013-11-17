@@ -1,6 +1,6 @@
 //definitions
 #define DRIVE_ENCODERS abs(nMotorEncoder[DRIVE_LEFT])+abs(nMotorEncoder[DRIVE_RIGHT])/2
-#define ARM_ENCODERS abs(nMotorEncoder[ARM_LEFT])+abs(nMotorEncoder[ARM_RIGHT])/2
+#define ARM_ENCODERS abs(nMotorEncoder[ARM])
 
 //includes
 #include "drivetrain2.h"
@@ -33,19 +33,19 @@ void turnDriveTicks(int speed, int numTicks) {
 }
 
 void turnDrive45() {
-	turnDriveTicks(TURN_SPEED, FORTY_FIVE_TICKS);
+	turnDriveTicks(TURN_SPEED, FORTY_FIVE_DEGREES);
 }
 
 void turnDrive90() {
-	turnDriveTicks(TURN_SPEED, NINETY_TICKS);
+	turnDriveTicks(TURN_SPEED, NINETY_DEGREES);
 }
 
 void turnDrive180() {
-	turnDriveTicks(TURN_SPEED, ONE_EIGHTY_TICKS);
+	turnDriveTicks(TURN_SPEED, ONE_EIGHTY_DEGREES);
 }
 
 void turnDrive360() {
-	turnDriveTicks(TURN_SPEED, THREE_SIXTY_TICKS);
+	turnDriveTicks(TURN_SPEED, THREE_SIXTY_DEGREES);
 }
 
 void stopDrive() {
@@ -54,6 +54,6 @@ void stopDrive() {
 
 void moveArmTicks(int speed, int numTicks) {
 	while(ARM_ENCODERS < numTicks) {
-		_setArmMotors(speed, speed);
+		_setArmMotor(speed, speed);
 	}
 }
