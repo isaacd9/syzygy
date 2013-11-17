@@ -6,7 +6,7 @@ int getArm();
 
 //internal function prototypes
 
-void _setArmMotors(int speed);
+void _setArmMotor(int speed);
 
 void _slewArmJoy(int &joyVal);
 
@@ -22,13 +22,12 @@ const int nArmLogScale[17] =
 	};
 
 //function bodies
-void _setArmMotors(int speed) { //set arm
-	motor[ARM_LEFT] = speed;
-	motor[ARM_RIGHT] = speed;
+void _setArmMotor(int speed) { //set arm
+	motor[ARM] = speed;
 }
 
 int getArm() { //getter method for left arm
-	return motor[ARM_LEFT];
+	return motor[ARM];
 	}
 
 void _slewArmJoy(int &joyVal) { //modify direct input to log scale
@@ -43,5 +42,5 @@ void _slewArmJoy(int &joyVal) { //modify direct input to log scale
 
 void setArm(int speed) { //This function is event facing
 	_slewArmJoy(speed);
-	_setArmMotors(speed);
+	_setArmMotor(speed);
 }

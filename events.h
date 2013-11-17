@@ -3,6 +3,8 @@
 #include "drivetrain2.h"
 #include "flag_raiser.h"
 #include "arm.h"
+#include "hanging.h"
+#include "intake.h"
 
 //function prototypes
 
@@ -23,11 +25,12 @@ void onDriveJoyMove(int left, int right) {
 
 void onOpJoyMove(int left, int right) {
 		setArm(left);
+		setIntake(right);
 	}
 
 //Binding goes in here. Each case corresponds to button-1
 
-//Bidings here can be stateful
+//Bindings here can be stateful
 void onDriveJoyPressed(int button) {
 		switch(button) {
 			case 0:
@@ -93,12 +96,15 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 6:
+				driveFlagBack();
 			break;
 
 			case 7:
+				driveFlagForward();
 			break;
 
 			case 8:
+				hangRobot();
 			break;
 
 			case 9:
@@ -181,9 +187,11 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 6:
+				stopFlag();
 			break;
 
 			case 7:
+				stopFlag();
 			break;
 
 			case 8:
