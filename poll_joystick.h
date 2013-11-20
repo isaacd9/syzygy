@@ -23,7 +23,7 @@ task pollJoystick() {
 				onDriveJoyMove(driveJoyLeft, driveJoyRight); //These methods are stateless
 				onOpJoyMove(opJoyLeft, opJoyRight);
 
-				for(int i=0; i<7; i++) //Stateful implementation for the buttons
+				for(int i=0; i<11; i++) //Stateful implementation for the buttons
 				{
 					if(DRIVE_JOY_PRESSED(i+1)-lastDriveButtons[i] == 1) { //Call listeners
 							onDriveJoyPressed(i);

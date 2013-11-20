@@ -34,7 +34,7 @@
 #define DEBUGGER writeDebugStreamLine
 static const bool USE_LOG_SCALE=true;
 
-#define FLAG_SPEED 100
+#define FLAG_SPEED -100
 
 #define SERVO_HANG_POSITION 255
 

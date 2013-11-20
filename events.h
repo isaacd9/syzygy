@@ -96,14 +96,14 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 6:
-				driveFlagForward();
 			break;
 
 			case 7:
+				driveFlagBack();
 			break;
 
 			case 8:
-				driveFlagBack();
+				driveFlagForward();
 			break;
 
 			case 9:
@@ -186,10 +186,10 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 6:
-				stopFlag();
 			break;
 
 			case 7:
+				stopFlag();
 			break;
 
 			case 8:
