@@ -60,85 +60,54 @@ static const bool USE_LOG_SCALE=true;
 #define FORWARD_TO_RAMP_TIME 1
 #define FORWARD_ONTO_RAMP_TIME 1
 
-task main() {
-	int time=0;
-	_setDriveMotors(DRIVE_SPEED,DRIVE_SPEED);
-	while(time <= TO_BUCKET_TIME)
-	{
-		time+=5;
+//Definitions
+void runDriveTime(int speed, int time);
+void turnTime(int speed, int time);
+void runArmTime(int speed, int time);
+void runIntakeTime(int speed, int time);
+
+//Bodies 
+void runDriveTime(int speed, int time) {
+	for (int i=time; i>=0; i=i-5) {
+		_setDriveMotors(speed, speed);
 		wait1Msec(5);
 	}
 	_setDriveMotors(0,0);
-	_setArmMotor(-ARM_SPEED);
-	time=0;
- 	while(time <= DROP_ARM_TIME)
- 	{
- 		time+=5;
- 		wait1Msec(5);
+}
+
+void turnTime(int speed, int time) {
+	for (int i=time; i >=0; i=i-5) {
+		_setDriveMotors(speed, -speed);
+		wait1Msec(5);
+	}
+	_setDriveMotors(0,0);
+}
+
+void runArmTime(int speed, int time) {
+	for (int i=time; i>=0; i=i-5) {
+		_setArmMotor(speed);		
+		wait1Msec(5);
 	}
 	_setArmMotor(0);
-	time=0;
-	_setIntakeMotor(INTAKE_SPEED);
-	while(time <= RUN_INTAKE_TIME)
-	{
-		time+=5;
+}
+
+void runIntakeTime(int speed, int time) {
+	for (int i=time; i >= 0; i=i-5) {
+		_setIntakeMotor(speed);
 		wait1Msec(5);
 	}
 	_setIntakeMotor(0);
-	time=0;
-	_setDriveMotors(-DRIVE_SPEED, -DRIVE_SPEED);
-	while(time <= BACKOUT_TIME)
-	{
-		time+=5;
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-	time=0;
-	_setDriveMotors(TURN_SPEED,-TURN_SPEED);
-	while(time <= TURN_90_TIME)
-	{
-		time+=5;
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-	time=0;
-	_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-	while(time < FORWARD_BEYOND_RAMP_TIME)
-	{
-		time+=5;
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-	time=0;
-	_setDriveMotors(TURN_SPEED,-TURN_SPEED);
-	while(time <= TURN_90_TIME)
-	{
-		time+=5;
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-	time=0;
-	_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-	while(time <= FORWARD_TO_RAMP_TIME)
-	{
-		time+=5;
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-	time=0;
-	_setDriveMotors(TURN_SPEED,-TURN_SPEED);
-	while(time <= TURN_90_TIME)
-	{
-		time+=5;
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-	time=0;
-	_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-	while(time <= FORWARD_ONTO_RAMP_TIME)
-	{
-		time+=5;
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
+}
+
+task main() {
+	runDriveTime(DRIVE_SPEED, TO_BUCKET_TIME);
+	runArmTime(ARM_SPEED, DROP_ARM_TIME);
+	runIntakeTime(INTAKE_SPEED, RUN_INTAKE_TIME);
+	runDriveTime(-DRIVE_SPEED, BACKOUT_TIME);
+	turnTime(TURN_SPEED, TURN_90_TIME);
+	runDriveTime(DRIVE_SPEED, FORWARD_BEYOND_RAMP_TIME);
+	turnTime(TURN_SPEED, TURN_90_TIME);
+	runDriveTime(DRIVE_SPEED, FORWARD_TO_RAMP_TIME);
+	turnTime(TURN_SPEED, TURN_90_TIME);
+	runDriveTime(DRIVE_SPEED, FORWARD_ONTO_RAMP_TIME);
 }
