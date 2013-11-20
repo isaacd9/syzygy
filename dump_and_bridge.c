@@ -47,18 +47,18 @@ static const bool USE_LOG_SCALE=true;
 
 //Auto definitions
 #define DRIVE_SPEED 71
-#define TURN_SPEED 100
-#define ARM_SPEED 100
-#define INTAKE_SPEED 100
+#define TURN_SPEED 50
+#define ARM_SPEED 75
+#define INTAKE_SPEED 75
 
 #define TO_BUCKET_TIME 1000
-#define DROP_ARM_TIME 1
-#define RUN_INTAKE_TIME 1
-#define BACKOUT_TIME 1
-#define TURN_90_TIME 1
+#define DROP_ARM_TIME 1000
+#define RUN_INTAKE_TIME 1500
+#define BACKOUT_TIME 179
+#define TURN_90_TIME 750
 #define FORWARD_BEYOND_RAMP_TIME 1170
-#define FORWARD_TO_RAMP_TIME 1
-#define FORWARD_ONTO_RAMP_TIME 1
+#define FORWARD_TO_RAMP_TIME 1000
+#define FORWARD_ONTO_RAMP_TIME 2000
 
 //Definitions
 void runDriveTime(int speed, int time);
@@ -66,7 +66,7 @@ void turnTime(int speed, int time);
 void runArmTime(int speed, int time);
 void runIntakeTime(int speed, int time);
 
-//Bodies 
+//Bodies
 void runDriveTime(int speed, int time) {
 	for (int i=time; i>=0; i=i-5) {
 		_setDriveMotors(speed, speed);
@@ -85,7 +85,7 @@ void turnTime(int speed, int time) {
 
 void runArmTime(int speed, int time) {
 	for (int i=time; i>=0; i=i-5) {
-		_setArmMotor(speed);		
+		_setArmMotor(speed);
 		wait1Msec(5);
 	}
 	_setArmMotor(0);
