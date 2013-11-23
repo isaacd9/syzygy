@@ -34,7 +34,7 @@
 #define DEBUGGER writeDebugStreamLine
 static const bool USE_LOG_SCALE=true;
 
-#define FLAG_SPEED 100
+#define FLAG_SPEED -100
 
 #define SERVO_HANG_POSITION 255
 
@@ -45,77 +45,12 @@ static const bool USE_LOG_SCALE=true;
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
 
-//Auto definitions
-#define DRIVE_SPEED 71
-#define TURN_SPEED 50
-#define ARM_SPEED 75
-#define INTAKE_SPEED 75
-
-#define TO_BUCKET_TIME 1000
-#define DROP_ARM_TIME 1000
-#define RUN_INTAKE_TIME 2000
-#define BACKOUT_TIME 400
-#define TURN_90_TIME 1500
-#define FORWARD_BEYOND_RAMP_TIME 1170
-#define FORWARD_TO_RAMP_TIME 1000
-#define FORWARD_ONTO_RAMP_TIME 2000
-
-//Definitions
-void runDriveTime(int speed, int time);
-void turnTime(int speed, int time);
-void runArmTime(int speed, int time);
-void runIntakeTime(int speed, int time);
-
-//Bodies
-void runDriveTime(int speed, int time) {
-	for (int i=time; i>=0; i=i-5) {
-		_setDriveMotors(speed, speed);
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-}
-
-void turnTime(int speed, int time) {
-	for (int i=time; i >=0; i=i-5) {
-		_setDriveMotors(speed, -speed);
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-}
-
-void runArmTime(int speed, int time) {
-	for (int i=time; i>=0; i=i-5) {
-		_setArmMotor(speed);
-		wait1Msec(5);
-	}
-	_setArmMotor(0);
-}
-
-void runIntakeTime(int speed, int time) {
-	for (int i=time; i >= 0; i=i-5) {
-		_setIntakeMotor(speed);
-		wait1Msec(5);
-	}
-	_setIntakeMotor(0);
-}
-
 task main() {
-	runDriveTime(DRIVE_SPEED, TO_BUCKET_TIME);
-	wait1Msec(3000);
-	//runArmTime(ARM_SPEED,DROP_ARM_TIME);
-	//runIntakeTime(INTAKE_SPEED, RUN_INTAKE_TIME);
-	//runArmTime(-(ARM_SPEED), DROP_ARM_TIME);
-	runDriveTime(-DRIVE_SPEED, BACKOUT_TIME);
-	wait1Msec(3000);
-	turnTime(-TURN_SPEED, TURN_90_TIME);
-	wait1Msec(3000);
-	runDriveTime(DRIVE_SPEED, FORWARD_BEYOND_RAMP_TIME);
-	wait1Msec(3000);
-	turnTime(TURN_SPEED, TURN_90_TIME);
-	wait1Msec(3000);
-	runDriveTime(DRIVE_SPEED, FORWARD_TO_RAMP_TIME);
-	wait1Msec(3000);
-	turnTime(TURN_SPEED, TURN_90_TIME);
-	wait1Msec(3000);
-	runDriveTime(DRIVE_SPEED, FORWARD_ONTO_RAMP_TIME);
+  waitForStart();
+	StartTask(pollJoystick); //Begin to poll joystick for input
+	//StartTask(drivetrain);
+
+  while (true) {
+		wait1Msec(100);
+  }
 }

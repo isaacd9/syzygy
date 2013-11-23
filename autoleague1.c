@@ -46,19 +46,13 @@ static const bool USE_LOG_SCALE=true;
 #include "poll_joystick.h"
 
 //Auto definitions
-#define DRIVE_SPEED 71
+#define DRIVE_SPEED 90
 #define TURN_SPEED 50
 #define ARM_SPEED 75
 #define INTAKE_SPEED 75
 
-#define TO_BUCKET_TIME 1000
-#define DROP_ARM_TIME 1000
-#define RUN_INTAKE_TIME 2000
-#define BACKOUT_TIME 400
-#define TURN_90_TIME 1500
-#define FORWARD_BEYOND_RAMP_TIME 1170
-#define FORWARD_TO_RAMP_TIME 1000
-#define FORWARD_ONTO_RAMP_TIME 2000
+#define TO_RAMP_TIME 3500
+
 
 //Definitions
 void runDriveTime(int speed, int time);
@@ -100,22 +94,6 @@ void runIntakeTime(int speed, int time) {
 }
 
 task main() {
-	runDriveTime(DRIVE_SPEED, TO_BUCKET_TIME);
-	wait1Msec(3000);
-	//runArmTime(ARM_SPEED,DROP_ARM_TIME);
-	//runIntakeTime(INTAKE_SPEED, RUN_INTAKE_TIME);
-	//runArmTime(-(ARM_SPEED), DROP_ARM_TIME);
-	runDriveTime(-DRIVE_SPEED, BACKOUT_TIME);
-	wait1Msec(3000);
-	turnTime(-TURN_SPEED, TURN_90_TIME);
-	wait1Msec(3000);
-	runDriveTime(DRIVE_SPEED, FORWARD_BEYOND_RAMP_TIME);
-	wait1Msec(3000);
-	turnTime(TURN_SPEED, TURN_90_TIME);
-	wait1Msec(3000);
-	runDriveTime(DRIVE_SPEED, FORWARD_TO_RAMP_TIME);
-	wait1Msec(3000);
-	turnTime(TURN_SPEED, TURN_90_TIME);
-	wait1Msec(3000);
-	runDriveTime(DRIVE_SPEED, FORWARD_ONTO_RAMP_TIME);
+	waitForStart();
+	runDriveTime(-(DRIVE_SPEED), TO_RAMP_TIME);
 }

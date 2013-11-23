@@ -96,14 +96,15 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 6:
-			break;
-
-			case 7:
 				driveFlagBack();
 			break;
 
-			case 8:
+			case 7:
 				driveFlagForward();
+			break;
+
+			case 8:
+			hangRobot();
 			break;
 
 			case 9:
@@ -186,6 +187,7 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 6:
+				stopFlag();
 			break;
 
 			case 7:
@@ -193,7 +195,6 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 8:
-				stopFlag();
 			break;
 
 			case 9:
