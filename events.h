@@ -104,7 +104,7 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 8:
-			hangRobot();
+				hangRobot();
 			break;
 
 			case 9:
