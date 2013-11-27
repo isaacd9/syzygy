@@ -44,6 +44,7 @@ static const bool USE_LOG_SCALE=true;
 #include "common.h"
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
+#include "auto_common.h"
 
 //Auto definitions
 #define DRIVE_SPEED 71
@@ -59,45 +60,6 @@ static const bool USE_LOG_SCALE=true;
 #define FORWARD_BEYOND_RAMP_TIME 1170
 #define FORWARD_TO_RAMP_TIME 1000
 #define FORWARD_ONTO_RAMP_TIME 2000
-
-//Definitions
-void runDriveTime(int speed, int time);
-void turnTime(int speed, int time);
-void runArmTime(int speed, int time);
-void runIntakeTime(int speed, int time);
-
-//Bodies
-void runDriveTime(int speed, int time) {
-	for (int i=time; i>=0; i=i-5) {
-		_setDriveMotors(speed, speed);
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-}
-
-void turnTime(int speed, int time) {
-	for (int i=time; i >=0; i=i-5) {
-		_setDriveMotors(speed, -speed);
-		wait1Msec(5);
-	}
-	_setDriveMotors(0,0);
-}
-
-void runArmTime(int speed, int time) {
-	for (int i=time; i>=0; i=i-5) {
-		_setArmMotor(speed);
-		wait1Msec(5);
-	}
-	_setArmMotor(0);
-}
-
-void runIntakeTime(int speed, int time) {
-	for (int i=time; i >= 0; i=i-5) {
-		_setIntakeMotor(speed);
-		wait1Msec(5);
-	}
-	_setIntakeMotor(0);
-}
 
 task main() {
 	runDriveTime(DRIVE_SPEED, TO_BUCKET_TIME);

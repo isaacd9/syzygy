@@ -44,13 +44,12 @@ static const bool USE_LOG_SCALE=true;
 #include "common.h"
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
+#include "auto_common.h"
 
-task main() {
-  initializeRobot();
-	StartTask(pollJoystick); //Begin to poll joystick for input
-	//StartTask(drivetrain);
+//definitions
 
-  while (true) {
-		wait1Msec(100);
-  }
+//function prototypes
+
+task main ()
+{
 }
