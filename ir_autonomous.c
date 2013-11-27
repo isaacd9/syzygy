@@ -38,6 +38,16 @@ static const bool USE_LOG_SCALE=true;
 
 #define SERVO_HANG_POSITION 255
 
+#define DRIVE_SPEED 90
+
+#define BUCK1_TICKS 1000
+#define BUCK2_TICKS 2000
+#define BUCK3_TICKS 3000
+#define BUCK4_TICKS 4000
+#define BUCK_WINDOW_TICKS 1000
+#define END_OF_LINE 100000
+#define IR_THRESHOLD 170
+
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "initialize.h"
 
@@ -50,6 +60,27 @@ static const bool USE_LOG_SCALE=true;
 
 //function prototypes
 
-task main ()
+task main () {
+	nEncoderTarget[DRIVE_ENCODERS] = END_OF_LINE;
+	while (getIRValue() > IR_THRESHOLD) {
+		if (BUCK1_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK1_TICKS + BUCK_WINDOW_TICKS)){
+				nEncoderTarget[DRIVE_ENCODERS] = (BUCK1_TICKS + BUCK_WINDOW_TICKS)/2;
+			}
+			else if (BUCK2_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK2_TICKS + BUCK_WINDOW_TICKS)){
+				nEncoderTarget[DRIVE_ENCODERS] = (BUCK2_TICKS + BUCK_WINDOW_TICKS)/2;
+			}
+			else if (BUCK3_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK3_TICKS + BUCK_WINDOW_TICKS)){
+				nEncoderTarget[DRIVE_ENCODERS] = (BUCK3_TICKS + BUCK_WINDOW_TICKS)/2;
+			}
+			else if (BUCK4_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK4_TICKS + BUCK_WINDOW_TICKS)){
+				nEncoderTarget[DRIVE_ENCODERS] = (BUCK4_TICKS + BUCK_WINDOW_TICKS)/2;
+			}
+			else {	}
+		}
+	}
+}
+
+int getIRValue()
 {
+	//get the IR sensor's value (AC from center sensor) here
 }
