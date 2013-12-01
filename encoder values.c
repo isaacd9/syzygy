@@ -3,10 +3,10 @@
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
-#pragma config(Motor,  mtr_S1_C1_1,     ARM,           tmotorTetrix, PIDControl)
+#pragma config(Motor,  mtr_S1_C1_1,     ARM,           tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorNXT, openLoop)
-#pragma config(Motor,  mtr_S1_C2_1,     DRIVE_LEFT,    tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C2_2,     DRIVE_RIGHT,   tmotorTetrix, openLoop, reversed)
+#pragma config(Motor,  mtr_S1_C2_1,     DRIVE_LEFT,    tmotorTetrix, openLoop, encoder)
+#pragma config(Motor,  mtr_S1_C2_2,     DRIVE_RIGHT,   tmotorTetrix, openLoop, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C3_1,     INTAKE,        tmotorTetrix, PIDControl)
 #pragma config(Motor,  mtr_S1_C3_2,     FLAG_RAISER,   tmotorTetrix, openLoop, reversed)
 #pragma config(Servo,  srvo_S1_C4_1,    HANG,                 tServoStandard)
@@ -49,12 +49,12 @@ static const bool USE_LOG_SCALE=true;
 //Auto definitions
 #define DRIVE_SPEED 90
 
-#define BUCK1_TICKS 1440
-#define BUCK2_TICKS 2880
-#define BUCK3_TICKS 4320
-#define BUCK4_TICKS 5760
-#define BUCK_WINDOW_TICKS 1000
-#define END_OF_LINE 6760
+#define BUCK1_TICKS 375
+#define BUCK2_TICKS 1700
+#define BUCK3_TICKS 3750
+#define BUCK4_TICKS 5000
+#define BUCK_WINDOW_TICKS 50
+#define END_OF_LINE 5500
 #define IR_THRESHOLD 170
 
 void turn() {
@@ -68,13 +68,7 @@ void turn() {
 }
 
 task main() {
-	moveDriveTicks(DRIVE_SPEED, BUCK1_TICKS);
-	wait10Msec(300);
-	moveDriveTicks(DRIVE_SPEED, BUCK2_TICKS);
-	wait10Msec(300);
-	moveDriveTicks(DRIVE_SPEED, BUCK3_TICKS);
-	wait10Msec(300);
+	nMotorEncoder[DRIVE_RIGHT]=0;
 	moveDriveTicks(DRIVE_SPEED, BUCK4_TICKS);
-	wait10Msec(300);
-	moveDriveTicks(DRIVE_SPEED,END_OF_LINE);
+
 }
