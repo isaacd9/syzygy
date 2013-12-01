@@ -61,23 +61,19 @@ static const bool USE_LOG_SCALE=true;
 //function prototypes
 
 task main () {
-	nEncoderTarget[DRIVE_ENCODERS] = END_OF_LINE;
-	while (getIRValue() > IR_THRESHOLD) {
-		if (BUCK1_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK1_TICKS + BUCK_WINDOW_TICKS)){
-				nEncoderTarget[DRIVE_ENCODERS] = (BUCK1_TICKS + BUCK_WINDOW_TICKS)/2;
-			}
-			else if (BUCK2_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK2_TICKS + BUCK_WINDOW_TICKS)){
-				nEncoderTarget[DRIVE_ENCODERS] = (BUCK2_TICKS + BUCK_WINDOW_TICKS)/2;
-			}
-			else if (BUCK3_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK3_TICKS + BUCK_WINDOW_TICKS)){
-				nEncoderTarget[DRIVE_ENCODERS] = (BUCK3_TICKS + BUCK_WINDOW_TICKS)/2;
-			}
-			else if (BUCK4_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK4_TICKS + BUCK_WINDOW_TICKS)){
-				nEncoderTarget[DRIVE_ENCODERS] = (BUCK4_TICKS + BUCK_WINDOW_TICKS)/2;
-			}
-			else {	}
+	moveDriveTicks(DRIVE_SPEED, BUCK1_TICKS);
+
+}
+
+bool searchIR(startTicks) {
+	while(DRIVE_ENCODERS < (startTicks + BUCK_WINDOW_TICKS)) {
+		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
+		if(getIRValue > IR_THRESHOLD) {
+			return true;
 		}
 	}
+	return false;
+
 }
 
 int getIRValue()
