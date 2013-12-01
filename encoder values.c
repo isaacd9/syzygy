@@ -57,6 +57,16 @@ static const bool USE_LOG_SCALE=true;
 #define END_OF_LINE 6760
 #define IR_THRESHOLD 170
 
+void turn() {
+	turnDrive45();
+	wait10Msec(300);
+	turnDrive90();
+	wait10Msec(300);
+	turnDrive180();
+	wait10Msec(300);
+	turnDrive360();
+}
+
 task main() {
 	moveDriveTicks(DRIVE_SPEED, BUCK1_TICKS);
 	wait10Msec(300);

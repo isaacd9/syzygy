@@ -47,6 +47,8 @@ static const bool USE_LOG_SCALE=true;
 #include "auto_common.h"
 
 //definitions
+#define DRIVE_SPEED 90
+
 #define BUCK1_TICKS 1440
 #define BUCK2_TICKS 2880
 #define BUCK3_TICKS 4320
@@ -54,40 +56,33 @@ static const bool USE_LOG_SCALE=true;
 #define BUCK_WINDOW_TICKS 1000
 #define END_OF_LINE 6760
 #define IR_THRESHOLD 170
-int BUCK_TICKS[4] = {BUCK1_TICKS, BUCK2_TICKS, BUCK3_TICKS, BUCK4_TICKS}
+const int BUCK_TICKS[4] = {BUCK1_TICKS, BUCK2_TICKS, BUCK3_TICKS, BUCK4_TICKS};
 
 //function prototypes
 
-task main () {
-	nEncoderTarget[DRIVE_ENCODERS] = END_OF_LINE;
-	while (DRIVE_ENCODERS > BUCK_TICKS[1] && DRIVE_ENCODERS < (BUCK_TICKS[1] + BUCK_WINDOW_TICKS)) {
-		if (getIRValue() > IR_THRESHOLD) {
-			break;
-		}
-		else {	}
-	}
-	while (DRIVE_ENCODERS > BUCK_TICKS[2] && DRIVE_ENCODERS < (BUCK_TICKS[2] + BUCK_WINDOW_TICKS)) {
-		if (getIRValue() > IR_THRESHOLD) {
-			break;
-		}
-		else {	}
-	}
-	while (DRIVE_ENCODERS > BUCK_TICKS[3] && DRIVE_ENCODERS < (BUCK_TICKS[3] + BUCK_WINDOW_TICKS)) {
-		if (getIRValue() > IR_THRESHOLD) {
-			break;
-		}
-		else {	}
-	}
-	while (DRIVE_ENCODERS > BUCK_TICKS[4] && DRIVE_ENCODERS < (BUCK_TICKS[4] + BUCK_WINDOW_TICKS)) {
-		if (getIRValue() > IR_THRESHOLD) {
-			break;
-		}
-		else {	}
-	}
-	//
-}
-
 int getIRValue()
 {
+	return 0;
 	//get the IR sensor's value (AC from center sensor) here
+}
+
+int searchForIR() {
+	for (int ii = 0; ii < 4; ii++)
+		{
+			while (DRIVE_ENCODERS > BUCK_TICKS[ii] && DRIVE_ENCODERS < (BUCK_TICKS[ii] + BUCK_WINDOW_TICKS)) {
+				if (getIRValue() > IR_THRESHOLD) {
+					return ii;
+				}
+			}
+		}
+	return 3;
+}
+
+
+task main () {
+	moveDriveTicks(DRIVE_SPEED, END_OF_LINE);
+	int location = searchForIR();
+	//score here
+	moveDriveTicks(DRIVE_SPEED, END_OF_LINE);
+	turnDrive90();
 }

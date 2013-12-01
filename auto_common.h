@@ -2,7 +2,7 @@
 #define DRIVE_ENCODERS abs(nMotorEncoder[DRIVE_LEFT])+abs(nMotorEncoder[DRIVE_RIGHT])/2
 #define ARM_ENCODERS abs(nMotorEncoder[ARM])
 
-#define ENCODER_TURN_SPEED 50
+#define ENCODER_TURN_SPEED 70
 #define FORTY_FIVE_DEGREES 125
 #define NINETY_DEGREES 250
 #define ONE_EIGHTY_DEGREES 500
