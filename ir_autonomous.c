@@ -1,5 +1,5 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTServo)
-#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
+#pragma config(Sensor, S1,     IRSENSOR,       sensorNone)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -40,6 +40,7 @@ static const bool USE_LOG_SCALE=true;
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "initialize.h"
+#include "drivers/hitechnic-irseeker-v2.h"
 
 #include "common.h"
 #include "events.h" //Order is important here. This must be included above poll_joystick
@@ -58,12 +59,14 @@ static const bool USE_LOG_SCALE=true;
 #define IR_THRESHOLD 170
 const int BUCK_TICKS[4] = {BUCK1_TICKS, BUCK2_TICKS, BUCK3_TICKS, BUCK4_TICKS};
 
+
 //function prototypes
 
 int getIRValue()
 {
-	return 0;
-	//get the IR sensor's value (AC from center sensor) here
+	int ac1, ac2, ac3, ac4, ac5;
+	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
+	return ac3;
 }
 
 int searchForIR() {
