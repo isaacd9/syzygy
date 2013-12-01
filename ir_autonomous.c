@@ -38,16 +38,6 @@ static const bool USE_LOG_SCALE=true;
 
 #define SERVO_HANG_POSITION 255
 
-#define DRIVE_SPEED 90
-
-#define BUCK1_TICKS 1000
-#define BUCK2_TICKS 2000
-#define BUCK3_TICKS 3000
-#define BUCK4_TICKS 4000
-#define BUCK_WINDOW_TICKS 1000
-#define END_OF_LINE 100000
-#define IR_THRESHOLD 170
-
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "initialize.h"
 
@@ -57,27 +47,44 @@ static const bool USE_LOG_SCALE=true;
 #include "auto_common.h"
 
 //definitions
+#define BUCK1_TICKS 1440
+#define BUCK2_TICKS 2880
+#define BUCK3_TICKS 4320
+#define BUCK4_TICKS 5760
+#define BUCK_WINDOW_TICKS 1000
+#define END_OF_LINE 6760
+#define IR_THRESHOLD 170
+int BUCK_TICKS[4] = {BUCK1_TICKS, BUCK2_TICKS, BUCK3_TICKS, BUCK4_TICKS}
 
 //function prototypes
 
 task main () {
 	nEncoderTarget[DRIVE_ENCODERS] = END_OF_LINE;
-	while (getIRValue() > IR_THRESHOLD) {
-		if (BUCK1_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK1_TICKS + BUCK_WINDOW_TICKS)){
-				nEncoderTarget[DRIVE_ENCODERS] = (BUCK1_TICKS + BUCK_WINDOW_TICKS)/2;
-			}
-			else if (BUCK2_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK2_TICKS + BUCK_WINDOW_TICKS)){
-				nEncoderTarget[DRIVE_ENCODERS] = (BUCK2_TICKS + BUCK_WINDOW_TICKS)/2;
-			}
-			else if (BUCK3_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK3_TICKS + BUCK_WINDOW_TICKS)){
-				nEncoderTarget[DRIVE_ENCODERS] = (BUCK3_TICKS + BUCK_WINDOW_TICKS)/2;
-			}
-			else if (BUCK4_TICKS <= DRIVE_ENCODERS && DRIVE_ENCODERS <= (BUCK4_TICKS + BUCK_WINDOW_TICKS)){
-				nEncoderTarget[DRIVE_ENCODERS] = (BUCK4_TICKS + BUCK_WINDOW_TICKS)/2;
-			}
-			else {	}
+	while (DRIVE_ENCODERS > BUCK_TICKS[1] && DRIVE_ENCODERS < (BUCK_TICKS[1] + BUCK_WINDOW_TICKS)) {
+		if (getIRValue() > IR_THRESHOLD) {
+			break;
 		}
+		else {	}
 	}
+	while (DRIVE_ENCODERS > BUCK_TICKS[2] && DRIVE_ENCODERS < (BUCK_TICKS[2] + BUCK_WINDOW_TICKS)) {
+		if (getIRValue() > IR_THRESHOLD) {
+			break;
+		}
+		else {	}
+	}
+	while (DRIVE_ENCODERS > BUCK_TICKS[3] && DRIVE_ENCODERS < (BUCK_TICKS[3] + BUCK_WINDOW_TICKS)) {
+		if (getIRValue() > IR_THRESHOLD) {
+			break;
+		}
+		else {	}
+	}
+	while (DRIVE_ENCODERS > BUCK_TICKS[4] && DRIVE_ENCODERS < (BUCK_TICKS[4] + BUCK_WINDOW_TICKS)) {
+		if (getIRValue() > IR_THRESHOLD) {
+			break;
+		}
+		else {	}
+	}
+	//
 }
 
 int getIRValue()
