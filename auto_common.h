@@ -1,8 +1,8 @@
 //definitions
-#define DRIVE_ENCODERS abs(nMotorEncoder[DRIVE_LEFT])+abs(nMotorEncoder[DRIVE_RIGHT])/2
+#define DRIVE_ENCODERS -nMotorEncoder[DRIVE_RIGHT]
 #define ARM_ENCODERS abs(nMotorEncoder[ARM])
 
-#define ENCODER_TURN_SPEED 50
+#define ENCODER_TURN_SPEED 70
 #define FORTY_FIVE_DEGREES 125
 #define NINETY_DEGREES 250
 #define ONE_EIGHTY_DEGREES 500
@@ -30,13 +30,18 @@ void moveArmTicks(int speed, int numTicks);
 void moveDriveTicks(int speed, int numTicks) {
 	while(DRIVE_ENCODERS < numTicks) {
 		_setDriveMotors(speed,speed);
+		writeDebugStreamLine("%d", DRIVE_ENCODERS);
+		wait1Msec(5);
 	}
+	_setDriveMotors(0,0);
 }
 
 void turnDriveTicks(int speed, int numTicks) {
 	while(DRIVE_ENCODERS < numTicks) {
 		_setDriveMotors(speed,-speed);
+		wait1Msec(5);
 	}
+	_setDriveMotors(0,0);
 }
 
 void turnDrive45() {
