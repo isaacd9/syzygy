@@ -1,5 +1,5 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTServo)
-#pragma config(Sensor, S1,     IRSENSOR,       sensorNone)
+#pragma config(Sensor, S4,     IRSENSOR,       sensorI2CCustom)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -40,16 +40,13 @@ static const bool USE_LOG_SCALE=true;
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "initialize.h"
-#include "drivers/hitechnic-irseeker-v2.h"
 
-#include "common.h"
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
 #include "auto_common.h"
+#include "drivers/hitechnic-irseeker-v2.h"
 
 //definitions
-#define DRIVE_SPEED 90
-
 #define BUCK1_TICKS 1440
 #define BUCK2_TICKS 2880
 #define BUCK3_TICKS 4320
@@ -57,35 +54,43 @@ static const bool USE_LOG_SCALE=true;
 #define BUCK_WINDOW_TICKS 1000
 #define END_OF_LINE 6760
 #define IR_THRESHOLD 170
-const int BUCK_TICKS[4] = {BUCK1_TICKS, BUCK2_TICKS, BUCK3_TICKS, BUCK4_TICKS};
+int BUCK_TICKS[4] = {BUCK1_TICKS, BUCK2_TICKS, BUCK3_TICKS, BUCK4_TICKS};
 
 
 //function prototypes
+
+task main () {
+	nEncoderTarget[DRIVE_ENCODERS] = END_OF_LINE;
+	while (DRIVE_ENCODERS > BUCK_TICKS[1] && DRIVE_ENCODERS < (BUCK_TICKS[1] + BUCK_WINDOW_TICKS)) {
+		if (getIRValue() > IR_THRESHOLD) {
+			break;
+		}
+		else {	}
+	}
+	while (DRIVE_ENCODERS > BUCK_TICKS[2] && DRIVE_ENCODERS < (BUCK_TICKS[2] + BUCK_WINDOW_TICKS)) {
+		if (getIRValue() > IR_THRESHOLD) {
+			break;
+		}
+		else {	}
+	}
+	while (DRIVE_ENCODERS > BUCK_TICKS[3] && DRIVE_ENCODERS < (BUCK_TICKS[3] + BUCK_WINDOW_TICKS)) {
+		if (getIRValue() > IR_THRESHOLD) {
+			break;
+		}
+		else {	}
+	}
+	while (DRIVE_ENCODERS > BUCK_TICKS[4] && DRIVE_ENCODERS < (BUCK_TICKS[4] + BUCK_WINDOW_TICKS)) {
+		if (getIRValue() > IR_THRESHOLD) {
+			break;
+		}
+		else {	}
+	}
+	//
+}
 
 int getIRValue()
 {
 	int ac1, ac2, ac3, ac4, ac5;
 	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
 	return ac3;
-}
-
-int searchForIR() {
-	for (int ii = 0; ii < 4; ii++)
-		{
-			while (DRIVE_ENCODERS > BUCK_TICKS[ii] && DRIVE_ENCODERS < (BUCK_TICKS[ii] + BUCK_WINDOW_TICKS)) {
-				if (getIRValue() > IR_THRESHOLD) {
-					return ii;
-				}
-			}
-		}
-	return 3;
-}
-
-
-task main () {
-	moveDriveTicks(DRIVE_SPEED, END_OF_LINE);
-	int location = searchForIR();
-	//score here
-	moveDriveTicks(DRIVE_SPEED, END_OF_LINE);
-	turnDrive90();
 }
