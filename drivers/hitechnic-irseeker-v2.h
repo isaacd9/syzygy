@@ -30,7 +30,7 @@
  *
  * License: You may use this code as you wish, provided you give credit where its due.
  *
- * THIS CODE WILL ONLY WORK WITH ROBOTC VERSION 3.59 AND HIGHER. 
+ * THIS CODE WILL ONLY WORK WITH ROBOTC VERSION 3.59 AND HIGHER.
 
  * \author Xander Soldaat (mightor_at_gmail.com)
  * \date 06 April 2010
@@ -44,7 +44,7 @@
 #pragma systemFile
 
 #ifndef __COMMON_H__
-#include "common.h"
+#include "drivers/common.h"
 #endif
 
 #define HTIRS2_I2C_ADDR    0x10      /*!< IR Seeker I2C device address */
