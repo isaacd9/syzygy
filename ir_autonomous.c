@@ -48,6 +48,8 @@ static const bool USE_LOG_SCALE=true;
 
 //definitions
 #define DRIVE_SPEED 90
+#define ARM_SPEED 50
+#define INTAKE_SPEED 50
 
 #define BUCK1_TICKS 375
 #define BUCK2_TICKS 1700
@@ -55,6 +57,12 @@ static const bool USE_LOG_SCALE=true;
 #define BUCK4_TICKS 5000
 #define BUCK_WINDOW_TICKS 1000
 #define END_OF_LINE 5500
+
+#define TO_WALL_TICKS 100
+#define ARM_RAISE_TICKS 50
+#define INTAKE_TIME 1000
+#define BACK_OUT_TICKS -TO_WALL_TICKS
+
 #define IR_THRESHOLD 100
 
 int foundVal = BUCK4_TICKS;
@@ -66,10 +74,6 @@ int getIRValue()
 	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
 	writeDebugStreamLine("%d", ac3);
 	return ac3;
-}
-
-void turnAndScore() {
-	//The part of the code that turns and actually scores
 }
 
 task main () {
@@ -86,7 +90,11 @@ task main () {
 
 	_setDriveMotors(0,0);
 
-//	turnAndScore();
+//	turnDrive90();
+		//moveDriveTicks(DRIVE_SPEED, TO_WALL_TICKS);
+		//moveArmTicks(ARM_SPEED, ARM_RAISE_TICKS);
+		//runIntakeTime(INTAKE_SPEED, INTAKE_TIME);
+		//moveDriveTicks(DRIVE_SPEED, BACK_OUT_TICKS);
 
 //	moveDriveTicks(END_OF_LINE-foundVal, DRIVE_SPEED);
 //	turnDrive90();
