@@ -1,6 +1,7 @@
 //definitions
-#define DRIVE_ENCODERS -nMotorEncoder[DRIVE_RIGHT]
-#define ARM_ENCODERS abs(nMotorEncoder[ARM])
+#define RIGHT_ENCODER -nMotorEncoder[DRIVE_RIGHT]
+#define LEFT_ENCODER -nMotorEncoder[DRIVE_lEFT]
+#define DRIVE_ENCODERS (RIGHT_ENCODER+LEFT_ENCODER)/2
 
 #define ENCODER_TURN_SPEED 70
 #define FORTY_FIVE_DEGREES 125
@@ -11,13 +12,8 @@
 //Function prototypes
 void moveDriveTicks(int speed, int numTicks);
 void turnDriveTicks(int speed, int numTicks); //To turn right, speed is <0
-void turnDrive45(); //Cannot set speeds for this as the speeds need to be preset for a predictable angle
-void turnDrive90();
-void turnDrive180();
-void turnDrive360();
+void zeroEncoders();
 void stopDrive();
-
-void moveArmTicks(int speed, int numTicks);
 
 //Function bodies
 
@@ -30,40 +26,30 @@ void moveDriveTicks(int speed, int numTicks) {
 	_setDriveMotors(0,0);
 }
 
-void turnDriveTicks(int speed, int numTicks) {
-	while(DRIVE_ENCODERS < numTicks) {
+void turnDriveRightTicks(int speed, int numTicks) {
+	while(LEFT_ENCODER < numTicks) {
 		_setDriveMotors(speed,-speed);
 		wait1Msec(5);
 	}
 	_setDriveMotors(0,0);
 }
 
-void turnDrive45() {
-	turnDriveTicks(ENCODER_TURN_SPEED, FORTY_FIVE_DEGREES);
+void turnDriveLeftTicks(int speed, int numTicks) {
+	while(RIGHT_ENCODER < numTicks) {
+		_setDriveMotors(-speed, speed);
+		wait1Msec(5);
+	}
+	_setDriveMotors(0,0);
 }
 
-void turnDrive90() {
-	turnDriveTicks(ENCODER_TURN_SPEED, NINETY_DEGREES);
-}
+void zeroEncoders() {
+	nMotorEncoder[DRIVE_RIGHT]=0;
+	nMotorEncoder[DRIVE_LEFT]=0;
 
-void turnDrive180() {
-	turnDriveTicks(ENCODER_TURN_SPEED, ONE_EIGHTY_DEGREES);
-}
-
-void turnDrive360() {
-	turnDriveTicks(ENCODER_TURN_SPEED, THREE_SIXTY_DEGREES);
 }
 
 void stopDrive() {
 	_setDriveMotors(0,0);
-}
-
-void moveArmTicks(int speed, int numTicks) {
-	while(ARM_ENCODERS < numTicks) {
-		_setArmMotor(speed);
-		wait1Msec(5);
-	}
-	_setArmMotor(0);
 }
 
 //Definitions

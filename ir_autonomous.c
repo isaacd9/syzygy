@@ -72,7 +72,7 @@ int getIRValue()
 	//get the IR sensor's value (AC from center sensor) here
 	int ac1, ac2, ac3, ac4, ac5;
 	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
-	writeDebugStreamLine("%d", ac3);
+	writeDebugStreamLine("IR VALUE %d", ac3);
 	return ac3;
 }
 
@@ -89,8 +89,9 @@ task main () {
 	}
 
 	_setDriveMotors(0,0);
+	writeDebugStreamLine("foundVal %d", foundVal);
 
-//	turnDrive90();
+	turnDrive90();
 		//moveDriveTicks(DRIVE_SPEED, TO_WALL_TICKS);
 		//moveArmTicks(ARM_SPEED, ARM_RAISE_TICKS);
 		//runIntakeTime(INTAKE_SPEED, INTAKE_TIME);
