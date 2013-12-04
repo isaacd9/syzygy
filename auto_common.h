@@ -8,12 +8,6 @@
 #define ONE_EIGHTY_DEGREES 500
 #define THREE_SIXTY_DEGREES 1000
 
-//includes
-#include "drivetrain2.h"
-#include "flag_raiser.h"
-#include "arm.h"
-#include "intake.h"
-
 //Function prototypes
 void moveDriveTicks(int speed, int numTicks);
 void turnDriveTicks(int speed, int numTicks); //To turn right, speed is <0
