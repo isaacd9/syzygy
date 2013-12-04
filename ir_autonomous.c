@@ -49,49 +49,46 @@ static const bool USE_LOG_SCALE=true;
 //definitions
 #define DRIVE_SPEED 90
 
-#define BUCK1_TICKS 1440
-#define BUCK2_TICKS 2880
-#define BUCK3_TICKS 4320
-#define BUCK4_TICKS 5760
+#define BUCK1_TICKS 375
+#define BUCK2_TICKS 1700
+#define BUCK3_TICKS 3750
+#define BUCK4_TICKS 5000
 #define BUCK_WINDOW_TICKS 1000
-#define END_OF_LINE 6760
-#define IR_THRESHOLD 170
-const int BUCK_TICKS[4] = {BUCK1_TICKS, BUCK2_TICKS, BUCK3_TICKS, BUCK4_TICKS};
+#define END_OF_LINE 5500
+#define IR_THRESHOLD 100
 
-
+int foundVal = BUCK4_TICKS;
 //function prototypes
-
-int getIRValue()
-{
-	int ac1, ac2, ac3, ac4, ac5;
-	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
-	return ac3;
-}
-
-int searchForIR() {
-	for (int ii = 0; ii < 4; ii++)
-		{
-			while (DRIVE_ENCODERS > BUCK_TICKS[ii] && DRIVE_ENCODERS < (BUCK_TICKS[ii] + BUCK_WINDOW_TICKS)) {
-				if (getIRValue() > IR_THRESHOLD) {
-					return ii;
-				}
-			}
-		}
-	return 3;
-}
-
 int getIRValue()
 {
 	//get the IR sensor's value (AC from center sensor) here
 	int ac1, ac2, ac3, ac4, ac5;
 	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
+	writeDebugStreamLine("%d", ac3);
 	return ac3;
 }
 
+void turnAndScore() {
+	//The part of the code that turns and actually scores
+}
+
 task main () {
-	moveDriveTicks(DRIVE_SPEED, END_OF_LINE);
-	int location = searchForIR();
-	//score here
-	moveDriveTicks(DRIVE_SPEED, END_OF_LINE);
-	turnDrive90();
+	while(DRIVE_ENCODERS < BUCK4_TICKS) {
+		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
+			if(DRIVE_ENCODERS == BUCK1_TICKS || DRIVE_ENCODERS == BUCK2_TICKS || DRIVE_ENCODERS == BUCK3_TICKS) {
+					if(getIRValue() > IR_THRESHOLD) {
+						foundVal = DRIVE_ENCODERS;
+						break;
+					}
+				}
+		wait1Msec(5);
+	}
+
+	_setDriveMotors(0,0);
+
+//	turnAndScore();
+
+//	moveDriveTicks(END_OF_LINE-foundVal, DRIVE_SPEED);
+//	turnDrive90();
+//	moveDriveTicks(TO_BRIDGE, DRIVE_SPEED);
 }

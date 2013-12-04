@@ -67,7 +67,9 @@ void stopDrive() {
 void moveArmTicks(int speed, int numTicks) {
 	while(ARM_ENCODERS < numTicks) {
 		_setArmMotor(speed);
+		wait1Msec(5);
 	}
+	_setArmMotor(0);
 }
 
 //Definitions
