@@ -48,20 +48,25 @@ static const bool USE_LOG_SCALE=true;
 
 //definitions
 #define DRIVE_SPEED 90
-#define ARM_SPEED 50
+#define TURN_SPEED 100
+#define ARM_SPEED 100
 #define INTAKE_SPEED 50
+
+#define NINETY_DEGREES 2000
 
 #define BUCK1_TICKS 375
 #define BUCK2_TICKS 1700
 #define BUCK3_TICKS 3750
 #define BUCK4_TICKS 5000
 #define BUCK_WINDOW_TICKS 1000
-#define END_OF_LINE 5500
 
-#define TO_WALL_TICKS 100
-#define ARM_RAISE_TICKS 50
-#define INTAKE_TIME 1000
-#define BACK_OUT_TICKS -TO_WALL_TICKS
+#define ARM_UP_TIME 2000
+#define KICK_TIME 1000
+
+#define END_OF_LINE 5500
+#define TO_BRIDGE_TICKS 1000
+#define TO_BRIDGE_TURN_TICKS 1000
+#define ONTO_BRIDGE_TICKS 1000
 
 #define IR_THRESHOLD 100
 
@@ -77,6 +82,7 @@ int getIRValue()
 }
 
 task main () {
+	zeroEncoders();
 	while(DRIVE_ENCODERS < BUCK4_TICKS) {
 		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
 			if(DRIVE_ENCODERS == BUCK1_TICKS || DRIVE_ENCODERS == BUCK2_TICKS || DRIVE_ENCODERS == BUCK3_TICKS) {
@@ -91,13 +97,14 @@ task main () {
 	_setDriveMotors(0,0);
 	writeDebugStreamLine("foundVal %d", foundVal);
 
-	turnDrive90();
-		//moveDriveTicks(DRIVE_SPEED, TO_WALL_TICKS);
-		//moveArmTicks(ARM_SPEED, ARM_RAISE_TICKS);
-		//runIntakeTime(INTAKE_SPEED, INTAKE_TIME);
-		//moveDriveTicks(DRIVE_SPEED, BACK_OUT_TICKS);
+	turnDriveRightTicks(TURN_SPEED, NINETY_DEGREES);
 
-//	moveDriveTicks(END_OF_LINE-foundVal, DRIVE_SPEED);
-//	turnDrive90();
-//	moveDriveTicks(TO_BRIDGE, DRIVE_SPEED);
+	runArmTime(ARM_SPEED, ARM_UP_TIME);
+	runIntakeTime(INTAKE_SPEED, KICK_TIME);
+
+	turnDriveLeftTicks(TURN_SPEED, NINETY_DEGREES);
+	moveDriveTicks(DRIVE_SPEED, END_OF_LINE-foundVal); //Assumes no interruption in positioning
+
+	turnDriveRightTicks(TURN_SPEED, TO_BRIDGE_TURN_TICKS);
+	moveDriveTicks(DRIVE_SPEED, ONTO_BRIDGE_TICKS);
 }

@@ -1,17 +1,12 @@
 //definitions
 #define RIGHT_ENCODER -nMotorEncoder[DRIVE_RIGHT]
-#define LEFT_ENCODER -nMotorEncoder[DRIVE_lEFT]
+#define LEFT_ENCODER -nMotorEncoder[DRIVE_LEFT]
 #define DRIVE_ENCODERS (RIGHT_ENCODER+LEFT_ENCODER)/2
-
-#define ENCODER_TURN_SPEED 70
-#define FORTY_FIVE_DEGREES 125
-#define NINETY_DEGREES 250
-#define ONE_EIGHTY_DEGREES 500
-#define THREE_SIXTY_DEGREES 1000
 
 //Function prototypes
 void moveDriveTicks(int speed, int numTicks);
-void turnDriveTicks(int speed, int numTicks); //To turn right, speed is <0
+void turnDriveRightTicks(int speed, int numTicks); //To turn right, speed is <0
+void turnDriveLeftTicks(int speed, int numTicks);
 void zeroEncoders();
 void stopDrive();
 
