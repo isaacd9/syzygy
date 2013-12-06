@@ -1,7 +1,7 @@
 //definitions
-#define RIGHT_ENCODER -nMotorEncoder[DRIVE_RIGHT]
+#define RIGHT_ENCODER -nMotorEncoder[DRIVE_LEFT]
 #define LEFT_ENCODER -nMotorEncoder[DRIVE_LEFT]
-#define DRIVE_ENCODERS (RIGHT_ENCODER+LEFT_ENCODER)/2
+#define DRIVE_ENCODERS LEFT_ENCODER
 
 //Function prototypes
 void moveDriveTicks(int speed, int numTicks);
@@ -21,6 +21,15 @@ void moveDriveTicks(int speed, int numTicks) {
 	_setDriveMotors(0,0);
 }
 
+void moveDriveBack(int speed, int numTicks) {
+	while(DRIVE_ENCODERS > numTicks) {
+		_setDriveMotors(-speed,-speed);
+		writeDebugStreamLine("%d", DRIVE_ENCODERS);
+		wait1Msec(5);
+	}
+	_setDriveMotors(0,0);
+}
+
 void turnDriveRightTicks(int speed, int numTicks) {
 	while(LEFT_ENCODER < numTicks) {
 		_setDriveMotors(speed,-speed);
@@ -30,8 +39,9 @@ void turnDriveRightTicks(int speed, int numTicks) {
 }
 
 void turnDriveLeftTicks(int speed, int numTicks) {
-	while(RIGHT_ENCODER < numTicks) {
+	while(LEFT_ENCODER > numTicks) {
 		_setDriveMotors(-speed, speed);
+		writeDebugStreamLine("%d", DRIVE_ENCODERS);
 		wait1Msec(5);
 	}
 	_setDriveMotors(0,0);

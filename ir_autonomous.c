@@ -52,23 +52,23 @@ static const bool USE_LOG_SCALE=true;
 #define ARM_SPEED 100
 #define INTAKE_SPEED 50
 
+#define FORTY_FIVE_DEGREES 570
 #define NINETY_DEGREES 1170
 
 #define BUCK1_TICKS 375
 #define BUCK2_TICKS 1700
 #define BUCK3_TICKS 3750
-#define BUCK4_TICKS 5500
+#define BUCK4_TICKS 5200
 #define BUCK_WINDOW_TICKS 40
 
-#define ARM_TIME 2000
-#define KICK_TIME 1000
+#define ARM_TIME 5000
+#define KICK_TIME 4000
 
-#define END_OF_LINE 5500
-#define TO_BRIDGE_TICKS 1000
-#define TO_BRIDGE_TURN_TICKS 1500
+#define END_OF_LINE 5300
+#define INTERMEDIATE_TICKS 1000
 #define ONTO_BRIDGE_TICKS 3000
 
-#define IR_THRESHOLD 50
+#define IR_THRESHOLD 80
 
 int foundVal = BUCK4_TICKS;
 //function prototypes
@@ -87,28 +87,60 @@ task main () {
 	zeroEncoders();
 	while(DRIVE_ENCODERS < BUCK4_TICKS) {
 		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-			if((BUCK1_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK1_TICKS+BUCK_WINDOW_TICKS )|| (BUCK2_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK2_TICKS+BUCK_WINDOW_TICKS ) || (BUCK3_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK3_TICKS+BUCK_WINDOW_TICKS )) {
+	//		if((BUCK1_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK1_TICKS+BUCK_WINDOW_TICKS )|| (BUCK2_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK2_TICKS+BUCK_WINDOW_TICKS ) || (BUCK3_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK3_TICKS+BUCK_WINDOW_TICKS )) {
 					if(getIRValue() > IR_THRESHOLD) {
 						foundVal = DRIVE_ENCODERS;
 						break;
 					}
-				}
+			//	}
 				writeDebugStreamLine("%d", DRIVE_ENCODERS);
 		wait1Msec(5);
 	}
 
+	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+650);
 	stopDrive();
+
 	writeDebugStreamLine("foundVal %d", foundVal);
 
+	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+NINETY_DEGREES+400);
+
+	runArmTime(ARM_SPEED, 4000);
+	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+500);
+	//runArmTime(-ARM_SPEED, 600);
+	runIntakeTime(-INTAKE_SPEED, KICK_TIME);
+	//runArmTime(ARM_SPEED, 600);
+	moveDriveBack(DRIVE_SPEED, DRIVE_ENCODERS-500);
+	runArmTime(-ARM_SPEED, 2000);
+	turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-NINETY_DEGREES+300);
+
+	while(DRIVE_ENCODERS < END_OF_LINE+400)
+	{
+		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
+		wait1Msec(5);
+	}
+	stopDrive();
+
+	zeroEncoders();
+  turnDriveRightTicks(TURN_SPEED, 600);
+  zeroEncoders();
+	for(int i=1500; i >= 0; i=i-5)
+	{
+		_setDriveMotors(100, 17);
+		wait1Msec(5);
+		//writeDebugStreamLine("Value: %d", i);
+	}
+	stopDrive();
+	for(int i=3500; i >= 0; i=i-5)
+	{
+		_setDriveMotors(100, 7);
+		wait1Msec(5);
+		//writeDebugStreamLine("Value: %d", i);
+	}
+	stopDrive();
+/*
+	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS);
+	moveDriveTicks(DRIVE_SPEED, INTERMEDIATE_TICKS);
 	turnDriveRightTicks(TURN_SPEED, NINETY_DEGREES);
-
-	runArmTime(ARM_SPEED, ARM_TIME);
-	runIntakeTime(INTAKE_SPEED, KICK_TIME);
-	runArmTime(-ARM_SPEED, ARM_TIME);
-
-	turnDriveLeftTicks(TURN_SPEED, NINETY_DEGREES);
-	moveDriveTicks(DRIVE_SPEED, END_OF_LINE-foundVal); //Assumes no interruption in positioning
-
-	turnDriveRightTicks(TURN_SPEED, TO_BRIDGE_TURN_TICKS);
 	moveDriveTicks(DRIVE_SPEED, ONTO_BRIDGE_TICKS);
+	*/
 }
