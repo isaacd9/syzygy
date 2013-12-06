@@ -69,6 +69,5 @@ void turn() {
 
 task main() {
 	nMotorEncoder[DRIVE_RIGHT]=0;
-	moveDriveTicks(DRIVE_SPEED, BUCK4_TICKS);
-
+	turnDriveTicks(-100,1170);
 }

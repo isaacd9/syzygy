@@ -47,23 +47,23 @@ static const bool USE_LOG_SCALE=true;
 #include "drivers/hitechnic-irseeker-v2.h"
 
 //definitions
-#define DRIVE_SPEED 40
+#define DRIVE_SPEED 90
 #define ARM_SPEED 50
 #define INTAKE_SPEED 50
 
 #define BUCK1_TICKS 375
 #define BUCK2_TICKS 1700
 #define BUCK3_TICKS 3750
-#define BUCK4_TICKS 5500
-#define BUCK_WINDOW_TICKS 40
+#define BUCK4_TICKS 5000
+#define BUCK_WINDOW_TICKS 1000
 #define END_OF_LINE 5500
 
 #define TO_WALL_TICKS 100
 #define ARM_RAISE_TICKS 50
-#define INTAKE_TIME 20
+#define INTAKE_TIME 1000
 #define BACK_OUT_TICKS -TO_WALL_TICKS
 
-#define IR_THRESHOLD 50
+#define IR_THRESHOLD 150
 
 int foundVal = BUCK4_TICKS;
 //function prototypes
@@ -77,20 +77,11 @@ int getIRValue()
 }
 
 task main () {
-	nMotorEncoder[DRIVE_RIGHT]=0;
-	while(DRIVE_ENCODERS < BUCK4_TICKS) {
-		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-			if((BUCK1_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK1_TICKS+BUCK_WINDOW_TICKS )|| (BUCK2_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK2_TICKS+BUCK_WINDOW_TICKS ) || (BUCK3_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK3_TICKS+BUCK_WINDOW_TICKS )) {
-					if(getIRValue() > IR_THRESHOLD) {
-						foundVal = DRIVE_ENCODERS;
-						break;
-					}
-				}
-				writeDebugStreamLine("%d", DRIVE_ENCODERS);
-		wait1Msec(5);
+		while(true) {
+			writeDebugStream("%d",getIRValue());
+			wait10Msec(10);
+		}
 	}
-
-	_setDriveMotors(0,0);
 
 //	turnDrive90();
 		//moveDriveTicks(DRIVE_SPEED, TO_WALL_TICKS);
@@ -101,4 +92,3 @@ task main () {
 //	moveDriveTicks(END_OF_LINE-foundVal, DRIVE_SPEED);
 //	turnDrive90();
 //	moveDriveTicks(TO_BRIDGE, DRIVE_SPEED);
-}
