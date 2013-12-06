@@ -82,7 +82,7 @@ int getIRValue()
 }
 
 task main () {
-	//waitForStart();
+	waitForStart();
 
 	zeroEncoders();
 	while(DRIVE_ENCODERS < BUCK4_TICKS) {
