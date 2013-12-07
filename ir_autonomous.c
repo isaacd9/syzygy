@@ -48,7 +48,7 @@ static const bool USE_LOG_SCALE=true;
 
 //definitions
 #define DRIVE_SPEED 40
-#define TURN_SPEED 100
+#define TURN_SPEED 40
 #define ARM_SPEED 100
 #define INTAKE_SPEED 50
 
@@ -77,7 +77,7 @@ int getIRValue()
 	//get the IR sensor's value (AC from center sensor) here
 	int ac1, ac2, ac3, ac4, ac5;
 	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
-	writeDebugStreamLine("IR VALUE %d", ac3);
+	//writeDebugStreamLine("IR VALUE %d", ac3);
 	return ac3;
 }
 
@@ -93,14 +93,14 @@ task main () {
 						break;
 					}
 			//	}
-				writeDebugStreamLine("%d", DRIVE_ENCODERS);
+				//writeDebugStreamLine("%d", DRIVE_ENCODERS);
 		wait1Msec(5);
 	}
 
 	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+650);
 	stopDrive();
 
-	writeDebugStreamLine("foundVal %d", foundVal);
+	//writeDebugStreamLine("foundVal %d", foundVal);
 
 	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+NINETY_DEGREES+400);
 
