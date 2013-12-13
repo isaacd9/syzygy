@@ -72,31 +72,15 @@ static const bool USE_LOG_SCALE=true;
 
 int foundVal = BUCK4_TICKS;
 //function prototypes
-int getIRValue()
-{
-	//get the IR sensor's value (AC from center sensor) here
-	int ac1, ac2, ac3, ac4, ac5;
-	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
-	//writeDebugStreamLine("IR VALUE %d", ac3);
-	return ac3;
-}
 
 task main () {
-	waitForStart();
+	//waitForStart();
 
 	zeroEncoders();
-	while(DRIVE_ENCODERS < BUCK4_TICKS) {
+	while(DRIVE_ENCODERS < BUCK1_TICKS) {
 		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-	//		if((BUCK1_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK1_TICKS+BUCK_WINDOW_TICKS )|| (BUCK2_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK2_TICKS+BUCK_WINDOW_TICKS ) || (BUCK3_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK3_TICKS+BUCK_WINDOW_TICKS )) {
-					if(getIRValue() > IR_THRESHOLD) {
-						foundVal = DRIVE_ENCODERS;
-						break;
-					}
-			//	}
-				//writeDebugStreamLine("%d", DRIVE_ENCODERS);
 		wait1Msec(5);
 	}
-
 	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+630);
 	stopDrive();
 
@@ -106,41 +90,25 @@ task main () {
 
 	runArmTime(ARM_SPEED, 4000);
 	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+900);
-	//runArmTime(-ARM_SPEED, 600);
 	runIntakeTime(-INTAKE_SPEED, KICK_TIME);
-	//runArmTime(ARM_SPEED, 600);
 	moveDriveBack(DRIVE_SPEED, DRIVE_ENCODERS-900);
 	runArmTime(-ARM_SPEED, 2000);
 	turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-NINETY_DEGREES+300);
-
-	while(DRIVE_ENCODERS < END_OF_LINE+500)
-	{
-		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-		wait1Msec(5);
-	}
-	stopDrive();
-
 	zeroEncoders();
-  turnDriveRightTicks(TURN_SPEED, 600);
+  moveDriveTicks(DRIVE_SPEED, 1005);
   zeroEncoders();
 	for(int i=1500; i >= 0; i=i-5)
 	{
-		_setDriveMotors(100, 17);
+		_setDriveMotors(-17, -100);
 		wait1Msec(5);
 		//writeDebugStreamLine("Value: %d", i);
 	}
 	stopDrive();
 	for(int i=4500; i >= 0; i=i-5)
 	{
-		_setDriveMotors(100, 7);
+		_setDriveMotors(-7, -100);
 		wait1Msec(5);
 		//writeDebugStreamLine("Value: %d", i);
 	}
 	stopDrive();
-/*
-	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS);
-	moveDriveTicks(DRIVE_SPEED, INTERMEDIATE_TICKS);
-	turnDriveRightTicks(TURN_SPEED, NINETY_DEGREES);
-	moveDriveTicks(DRIVE_SPEED, ONTO_BRIDGE_TICKS);
-	*/
 }
