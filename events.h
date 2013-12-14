@@ -3,8 +3,9 @@
 #include "drivetrain2.h"
 #include "flag_raiser.h"
 #include "arm.h"
-#include "hanging.h"
+//#include "hanging.h"
 #include "intake.h"
+#include "intake_flap.h"
 
 //function prototypes
 
@@ -81,12 +82,14 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 1:
+				flapForward();
 			break;
 
 			case 2:
 			break;
 
 			case 3:
+				flapBack();
 			break;
 
 			case 4:
@@ -104,7 +107,7 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 8:
-				hangRobot();
+				//hangRobot();
 			break;
 
 			case 9:
