@@ -89,7 +89,6 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 3:
-				flapBack();
 			break;
 
 			case 4:
@@ -175,6 +174,7 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 1:
+				flapBack();
 			break;
 
 			case 2:

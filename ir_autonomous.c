@@ -1,16 +1,17 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTServo)
+#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S4,     IRSENSOR,       sensorI2CCustom)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
-#pragma config(Motor,  mtr_S1_C1_1,     ARM,           tmotorTetrix, PIDControl)
+#pragma config(Motor,  mtr_S1_C1_1,     ARM,           tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorNXT, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     DRIVE_LEFT,    tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_2,     DRIVE_RIGHT,   tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C3_1,     INTAKE,        tmotorTetrix, PIDControl)
 #pragma config(Motor,  mtr_S1_C3_2,     FLAG_RAISER,   tmotorTetrix, openLoop, reversed)
-#pragma config(Servo,  srvo_S1_C4_1,    HANG,                 tServoStandard)
-#pragma config(Servo,  srvo_S1_C4_2,    HANG2,                tServoStandard)
+#pragma config(Servo,  srvo_S1_C4_1,    FLAP_SERVO,           tServoStandard)
+#pragma config(Servo,  srvo_S1_C4_2,    servo2,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_3,    servo3,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_5,    servo5,               tServoNone)
@@ -61,8 +62,8 @@ static const bool USE_LOG_SCALE=true;
 #define BUCK4_TICKS 5200
 #define BUCK_WINDOW_TICKS 40
 
-#define ARM_TIME 5000
-#define KICK_TIME 4000
+#define ARM_TIME 2000
+#define KICK_TIME 1000
 
 #define END_OF_LINE 5300
 #define INTERMEDIATE_TICKS 1000
@@ -82,7 +83,7 @@ int getIRValue()
 }
 
 task main () {
-	waitForStart();
+	//waitForStart();
 
 	zeroEncoders();
 	while(DRIVE_ENCODERS < BUCK4_TICKS) {
@@ -97,21 +98,24 @@ task main () {
 		wait1Msec(5);
 	}
 
-	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+630);
+	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+1200);
 	stopDrive();
 
 	//writeDebugStreamLine("foundVal %d", foundVal);
+	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+100+(NINETY_DEGREES/2));
+	wait10Msec(100);
+	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+(NINETY_DEGREES/2));
 
-	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+NINETY_DEGREES+400);
-
-	runArmTime(ARM_SPEED, 4000);
-	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+900);
+	runArmTime(ARM_SPEED, ARM_TIME);
+	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+1100);
 	//runArmTime(-ARM_SPEED, 600);
-	runIntakeTime(-INTAKE_SPEED, KICK_TIME);
+	flapForward();
+	runIntakeTime(INTAKE_SPEED, KICK_TIME);
+	flapBack();
 	//runArmTime(ARM_SPEED, 600);
 	moveDriveBack(DRIVE_SPEED, DRIVE_ENCODERS-900);
-	runArmTime(-ARM_SPEED, 2000);
-	turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-NINETY_DEGREES+300);
+	runArmTime(-ARM_SPEED, ARM_TIME-200);
+	turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-NINETY_DEGREES+200);
 
 	while(DRIVE_ENCODERS < END_OF_LINE+500)
 	{
@@ -125,17 +129,16 @@ task main () {
   zeroEncoders();
 	for(int i=1500; i >= 0; i=i-5)
 	{
-		_setDriveMotors(100, 17);
+		_setDriveMotors(100, 30);
 		wait1Msec(5);
 		//writeDebugStreamLine("Value: %d", i);
 	}
 	stopDrive();
-	for(int i=4500; i >= 0; i=i-5)
-	{
-		_setDriveMotors(100, 7);
-		wait1Msec(5);
-		//writeDebugStreamLine("Value: %d", i);
-	}
+	zeroEncoders();
+	moveDriveTicks(DRIVE_SPEED, 1200);
+	runIntakeTime(-INTAKE_SPEED, 4000);
+	turnDriveLeftTicks(TURN_SPEED,DRIVE_ENCODERS+300);
+	moveDriveBack(DRIVE_SPEED, 1500);
 	stopDrive();
 /*
 	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS);
