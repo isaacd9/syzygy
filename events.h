@@ -82,7 +82,6 @@ void onOpJoyPressed(int button) {
 			break;
 
 			case 1:
-				flapForward();
 			break;
 
 			case 2:
@@ -174,7 +173,7 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 1:
-				flapBack();
+				toggleFlap();
 			break;
 
 			case 2:

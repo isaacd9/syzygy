@@ -1,16 +1,17 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTServo)
+#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S4,     IRSENSOR,       sensorI2CCustom)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
-#pragma config(Motor,  mtr_S1_C1_1,     ARM,           tmotorTetrix, PIDControl)
+#pragma config(Motor,  mtr_S1_C1_1,     ARM,           tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorNXT, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     DRIVE_LEFT,    tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_2,     DRIVE_RIGHT,   tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C3_1,     INTAKE,        tmotorTetrix, PIDControl)
 #pragma config(Motor,  mtr_S1_C3_2,     FLAG_RAISER,   tmotorTetrix, openLoop, reversed)
-#pragma config(Servo,  srvo_S1_C4_1,    HANG,                 tServoStandard)
-#pragma config(Servo,  srvo_S1_C4_2,    HANG2,                tServoStandard)
+#pragma config(Servo,  srvo_S1_C4_1,    FLAP_SERVO,           tServoStandard)
+#pragma config(Servo,  srvo_S1_C4_2,    servo2,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_3,    servo3,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_5,    servo5,               tServoNone)
@@ -48,12 +49,12 @@ static const bool USE_LOG_SCALE=true;
 
 //definitions
 #define DRIVE_SPEED 40
-#define TURN_SPEED 40
+#define TURN_SPEED 60
 #define ARM_SPEED 100
 #define INTAKE_SPEED -30
 
 #define FORTY_FIVE_DEGREES 570
-#define NINETY_DEGREES 1170
+#define NINETY_DEGREES 1370
 
 #define BUCK1_TICKS 375
 #define BUCK2_TICKS 1700
@@ -61,8 +62,8 @@ static const bool USE_LOG_SCALE=true;
 #define BUCK4_TICKS 5200
 #define BUCK_WINDOW_TICKS 40
 
-#define ARM_TIME 5000
-#define KICK_TIME 4000
+#define ARM_TIME 2200
+#define KICK_TIME 1000
 
 #define END_OF_LINE 5300
 #define INTERMEDIATE_TICKS 1000
@@ -75,40 +76,47 @@ int foundVal = BUCK4_TICKS;
 
 task main () {
 	//waitForStart();
+	flapClosed();
 
 	zeroEncoders();
-	while(DRIVE_ENCODERS < BUCK1_TICKS) {
-		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-		wait1Msec(5);
-	}
-	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+630);
-	stopDrive();
+	//while(DRIVE_ENCODERS < BUCK1_TICKS) {
+	//	_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
+	//	wait1Msec(5);
+	//}
+	//moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+630);
+	//stopDrive();
 
 	//writeDebugStreamLine("foundVal %d", foundVal);
 
-	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+NINETY_DEGREES+400);
+	//turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+NINETY_DEGREES+400);
+	//runDriveTime(DRIVE_SPEED, 500);
 
-	runArmTime(ARM_SPEED, 4000);
-	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+900);
-	runIntakeTime(-INTAKE_SPEED, KICK_TIME);
-	moveDriveBack(DRIVE_SPEED, DRIVE_ENCODERS-900);
-	runArmTime(-ARM_SPEED, 2000);
-	turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-NINETY_DEGREES+300);
+	runArmTime(ARM_SPEED, ARM_TIME);
+	runDriveTime(DRIVE_SPEED, 1300);
+	wait1Msec(300);
+	//runArmTime(-ARM_SPEED, 600);
+	flapOpen();
+	runIntakeTime(INTAKE_SPEED, KICK_TIME);
+	flapClosed();
+	//runArmTime(ARM_SPEED, 600);
+	runDriveTime(-DRIVE_SPEED, 1000);
+	runArmTime(-ARM_SPEED, ARM_TIME-200);
+
+	turnTime(-TURN_SPEED, 450);
+	//turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-(NINETY_DEGREES/2)-100);
+
 	zeroEncoders();
-  moveDriveTicks(DRIVE_SPEED, 1005);
-  zeroEncoders();
-	for(int i=1500; i >= 0; i=i-5)
+
+	while(DRIVE_ENCODERS < 7000)
 	{
-		_setDriveMotors(-17, -100);
-		wait1Msec(5);
-		//writeDebugStreamLine("Value: %d", i);
+		_setDriveMotors(100, 100);
+		_setIntakeMotor(100);
 	}
 	stopDrive();
-	for(int i=4500; i >= 0; i=i-5)
-	{
-		_setDriveMotors(-7, -100);
-		wait1Msec(5);
-		//writeDebugStreamLine("Value: %d", i);
-	}
-	stopDrive();
+	_setIntakeMotor(0);
+	flapClosed();
+
+	turnTime(-TURN_SPEED, 600);
+	runDriveTime(-100, 3000);
+
 }

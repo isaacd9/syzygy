@@ -14,7 +14,7 @@ void stopDrive();
 
 void moveDriveTicks(int speed, int numTicks) {
 	while(DRIVE_ENCODERS < numTicks) {
-		_setDriveMotors(speed+2,speed);
+		_setDriveMotors(speed,speed);
 		writeDebugStreamLine("%d", DRIVE_ENCODERS);
 		wait1Msec(5);
 	}
@@ -23,7 +23,7 @@ void moveDriveTicks(int speed, int numTicks) {
 
 void moveDriveBack(int speed, int numTicks) {
 	while(DRIVE_ENCODERS > numTicks) {
-		_setDriveMotors(-speed-2,-speed);
+		_setDriveMotors(-speed,-speed);
 		writeDebugStreamLine("%d", DRIVE_ENCODERS);
 		wait1Msec(5);
 	}
@@ -34,6 +34,7 @@ void turnDriveRightTicks(int speed, int numTicks) {
 	while(LEFT_ENCODER < numTicks) {
 		_setDriveMotors(speed,-speed);
 		wait1Msec(5);
+		writeDebugStreamLine("%d", DRIVE_ENCODERS);
 	}
 	_setDriveMotors(0,0);
 }

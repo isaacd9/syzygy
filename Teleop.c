@@ -47,6 +47,7 @@ static const bool USE_LOG_SCALE=true;
 
 task main() {
   waitForStart();
+  flapClosed();
 	StartTask(pollJoystick); //Begin to poll joystick for input
 	//StartTask(drivetrain);
 

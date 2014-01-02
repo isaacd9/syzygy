@@ -86,18 +86,17 @@ task main () {
 	//waitForStart();
 
 	zeroEncoders();
-	while(DRIVE_ENCODERS < BUCK4_TICKS) {
-		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
+	while(DRIVE_ENCODERS < BUCK4_TICKS-1200) {
+		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED-8);
 	//		if((BUCK1_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK1_TICKS+BUCK_WINDOW_TICKS )|| (BUCK2_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK2_TICKS+BUCK_WINDOW_TICKS ) || (BUCK3_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK3_TICKS+BUCK_WINDOW_TICKS )) {
 					if(getIRValue() > IR_THRESHOLD) {
 						foundVal = DRIVE_ENCODERS;
 						break;
 					}
-			//	}
-				//writeDebugStreamLine("%d", DRIVE_ENCODERS);
+				writeDebugStreamLine("%d", DRIVE_ENCODERS);
 		wait1Msec(5);
 	}
-
+	writeDebugStreamLine("stopped at%d", DRIVE_ENCODERS);
 	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+1200);
 	stopDrive();
 
@@ -109,9 +108,9 @@ task main () {
 	runArmTime(ARM_SPEED, ARM_TIME);
 	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+1100);
 	//runArmTime(-ARM_SPEED, 600);
-	flapForward();
+	flapOpen();
 	runIntakeTime(INTAKE_SPEED, KICK_TIME);
-	flapBack();
+	flapClosed();
 	//runArmTime(ARM_SPEED, 600);
 	moveDriveBack(DRIVE_SPEED, DRIVE_ENCODERS-900);
 	runArmTime(-ARM_SPEED, ARM_TIME-200);
