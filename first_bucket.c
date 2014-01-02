@@ -62,7 +62,7 @@ static const bool USE_LOG_SCALE=true;
 #define BUCK4_TICKS 5200
 #define BUCK_WINDOW_TICKS 40
 
-#define ARM_TIME 2200
+#define ARM_TIME 2400
 #define KICK_TIME 1000
 
 #define END_OF_LINE 5300
@@ -92,22 +92,22 @@ task main () {
 	//runDriveTime(DRIVE_SPEED, 500);
 
 	runArmTime(ARM_SPEED, ARM_TIME);
-	runDriveTime(DRIVE_SPEED, 1000);
+	runDriveTime(DRIVE_SPEED, 1100);
 	wait1Msec(300);
 	//runArmTime(-ARM_SPEED, 600);
 	flapOpen();
 	runIntakeTime(INTAKE_SPEED, KICK_TIME);
 	flapClosed();
 	//runArmTime(ARM_SPEED, 600);
-	runDriveTime(-DRIVE_SPEED, 1000);
+	runDriveTime(-DRIVE_SPEED, 850);
 	runArmTime(-ARM_SPEED, ARM_TIME-200);
 
-	turnTime(-TURN_SPEED, 500);
+	turnTime(-TURN_SPEED, 700);
 	//turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-(NINETY_DEGREES/2)-100);
 
 	zeroEncoders();
 
-	for (int i=4750; i>=0; i=i-5) {
+	for (int i=4500; i>=0; i=i-5) {
 		_setDriveMotors(DRIVE_SPEED-5, DRIVE_SPEED);
 		_setIntakeMotor(100);
 		wait1Msec(5);
@@ -122,7 +122,7 @@ task main () {
 		wait1Msec(5);
 	}
 
-	turnTime(-TURN_SPEED, 400);
+	turnTime(-TURN_SPEED, 500);
 	runDriveTime(-100, 2750);
 
 }
