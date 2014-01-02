@@ -92,7 +92,7 @@ task main () {
 	//runDriveTime(DRIVE_SPEED, 500);
 
 	runArmTime(ARM_SPEED, ARM_TIME);
-	runDriveTime(DRIVE_SPEED, 1300);
+	runDriveTime(DRIVE_SPEED, 1000);
 	wait1Msec(300);
 	//runArmTime(-ARM_SPEED, 600);
 	flapOpen();
@@ -102,21 +102,27 @@ task main () {
 	runDriveTime(-DRIVE_SPEED, 1000);
 	runArmTime(-ARM_SPEED, ARM_TIME-200);
 
-	turnTime(-TURN_SPEED, 450);
+	turnTime(-TURN_SPEED, 500);
 	//turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-(NINETY_DEGREES/2)-100);
 
 	zeroEncoders();
 
-	while(DRIVE_ENCODERS < 7000)
-	{
-		_setDriveMotors(100, 100);
+	for (int i=4750; i>=0; i=i-5) {
+		_setDriveMotors(DRIVE_SPEED-5, DRIVE_SPEED);
 		_setIntakeMotor(100);
+		wait1Msec(5);
 	}
+
 	stopDrive();
 	_setIntakeMotor(0);
 	flapClosed();
 
-	turnTime(-TURN_SPEED, 600);
-	runDriveTime(-100, 3000);
+	for (int i=750; i>=0; i=i-5) {
+		_setDriveMotors(-DRIVE_SPEED, -DRIVE_SPEED+5);
+		wait1Msec(5);
+	}
+
+	turnTime(-TURN_SPEED, 400);
+	runDriveTime(-100, 2750);
 
 }
