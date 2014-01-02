@@ -26,7 +26,9 @@ void onDriveJoyMove(int left, int right) {
 
 void onOpJoyMove(int left, int right) {
 		setArm(left);
-		setIntake(right);
+		if(!intakeLocked()) {
+			setIntake(right);
+		}
 	}
 
 //Binding goes in here. Each case corresponds to button-1
@@ -79,12 +81,17 @@ void onDriveJoyPressed(int button) {
 void onOpJoyPressed(int button) {
 		switch(button) {
 			case 0:
+				flapOpen();
 			break;
 
 			case 1:
+				flapOpen();
+				_setIntakeMotor(-100);
+				lockIntake();
 			break;
 
 			case 2:
+				flapClosed();
 			break;
 
 			case 3:
@@ -173,7 +180,9 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 1:
-				toggleFlap();
+				flapClosed();
+				_setIntakeMotor(0);
+				unlockIntake();
 			break;
 
 			case 2:
