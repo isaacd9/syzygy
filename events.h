@@ -86,7 +86,7 @@ void onOpJoyPressed(int button) {
 
 			case 1:
 				flapOpen();
-				_setIntakeMotor(-100);
+				_setIntakeMotor(-80);
 				lockIntake();
 			break;
 
