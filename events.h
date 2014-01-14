@@ -7,6 +7,7 @@
 #include "intake.h"
 #include "intake_flap.h"
 
+#include "macroRecorder.h"
 //function prototypes
 
 void onDriveJoyMove(int left, int right); //Binding for drive sticks
@@ -22,6 +23,7 @@ void onOpJoyReleased(int button); //Bindings for op joy released
 //All bindings here should be STATELESS
 void onDriveJoyMove(int left, int right) {
 		setDrivetrain(left, right);
+		macroRecorder();
 	}
 
 void onOpJoyMove(int left, int right) {
