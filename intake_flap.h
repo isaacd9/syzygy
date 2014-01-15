@@ -1,13 +1,27 @@
 //function prototypes
 
-void flapForward();
-void flapBack();
+void flapOpen();
+void flapClosed();
+void toggleFlap();
+
+bool _flapState = false;
 //function bodies
 
-void flapForward() {
+void flapOpen() {
 		servo[FLAP_SERVO] = (230);
+		_flapState = true;
 	}
 
-void flapBack() {
+void flapClosed() {
 		servo[FLAP_SERVO] = 100;
+		_flapState = false;
 	}
+
+void toggleFlap() {
+	if (!_flapState) {
+		flapOpen();
+	}
+	else {
+		flapClosed();
+		}
+}

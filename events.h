@@ -23,12 +23,14 @@ void onOpJoyReleased(int button); //Bindings for op joy released
 //All bindings here should be STATELESS
 void onDriveJoyMove(int left, int right) {
 		setDrivetrain(left, right);
-		macroRecorder();
+		//macroRecorder();
 	}
 
 void onOpJoyMove(int left, int right) {
 		setArm(left);
-		setIntake(right);
+		if(!intakeLocked()) {
+			setIntake(right);
+		}
 	}
 
 //Binding goes in here. Each case corresponds to button-1
@@ -81,13 +83,17 @@ void onDriveJoyPressed(int button) {
 void onOpJoyPressed(int button) {
 		switch(button) {
 			case 0:
+				flapOpen();
 			break;
 
 			case 1:
-				flapForward();
+				flapOpen();
+				_setIntakeMotor(-80);
+				lockIntake();
 			break;
 
 			case 2:
+				flapClosed();
 			break;
 
 			case 3:
@@ -176,7 +182,9 @@ void onOpJoyReleased(int button) {
 			break;
 
 			case 1:
-				flapBack();
+				flapClosed();
+				_setIntakeMotor(0);
+				unlockIntake();
 			break;
 
 			case 2:

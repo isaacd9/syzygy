@@ -21,6 +21,7 @@ const int nIntakeLogScale[17] =
                 100
         };
 
+bool intakeLock = false;
 //function bodies
 void _setIntakeMotor(int speed) { //set intake
 		motor[INTAKE] = speed;
@@ -30,6 +31,16 @@ int getIntake() { //getter method for Intake
 	return motor[INTAKE];
 	}
 
+void lockIntake() {
+		intakeLock= true;
+	}
+void unlockIntake() {
+		intakeLock = false;
+	}
+
+bool intakeLocked() {
+		return intakeLock;
+	}
 void _slewIntakeJoy(int &joyVal) { //modify direct input to Log scale
 			if (USE_LOG_SCALE) {
 							joyVal /= 8;

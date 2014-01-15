@@ -1,5 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTServo)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
+#pragma config(Sensor, S4,     IRSENSOR,       sensorI2CCustom)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -34,7 +35,7 @@
 #define DEBUGGER writeDebugStreamLine
 static const bool USE_LOG_SCALE=true;
 
-#define FLAG_SPEED -100
+#define FLAG_SPEED 100
 
 #define SERVO_HANG_POSITION 255
 
@@ -44,14 +45,17 @@ static const bool USE_LOG_SCALE=true;
 #include "common.h"
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
+#include "auto_common.h"
+
+//Auto definitions
+#define DRIVE_SPEED 90
+#define TURN_SPEED 50
+#define ARM_SPEED 75
+#define INTAKE_SPEED 75
+
+#define TO_RAMP_TIME 3500
 
 task main() {
-  waitForStart();
-  flapClosed();
-	StartTask(pollJoystick); //Begin to poll joystick for input
-	//StartTask(drivetrain);
-
-  while (true) {
-		wait1Msec(100);
-  }
+	waitForStart();
+	runDriveTime(-(DRIVE_SPEED), TO_RAMP_TIME);
 }

@@ -49,12 +49,12 @@ static const bool USE_LOG_SCALE=true;
 
 //definitions
 #define DRIVE_SPEED 40
-#define TURN_SPEED 40
+#define TURN_SPEED 60
 #define ARM_SPEED 100
 #define INTAKE_SPEED -30
 
 #define FORTY_FIVE_DEGREES 570
-#define NINETY_DEGREES 1170
+#define NINETY_DEGREES 1370
 
 #define BUCK1_TICKS 375
 #define BUCK2_TICKS 1700
@@ -62,7 +62,7 @@ static const bool USE_LOG_SCALE=true;
 #define BUCK4_TICKS 5200
 #define BUCK_WINDOW_TICKS 40
 
-#define ARM_TIME 2000
+#define ARM_TIME 2300
 #define KICK_TIME 1000
 
 #define END_OF_LINE 5300
@@ -73,76 +73,54 @@ static const bool USE_LOG_SCALE=true;
 
 int foundVal = BUCK4_TICKS;
 //function prototypes
-int getIRValue()
-{
-	//get the IR sensor's value (AC from center sensor) here
-	int ac1, ac2, ac3, ac4, ac5;
-	HTIRS2readAllACStrength(IRSENSOR, ac1, ac2, ac3, ac4, ac5);
-	//writeDebugStreamLine("IR VALUE %d", ac3);
-	return ac3;
-}
 
 task main () {
-	//waitForStart();
+	waitForStart();
+	flapClosed();
 
 	zeroEncoders();
-	while(DRIVE_ENCODERS < BUCK4_TICKS-1200) {
-		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED-8);
-	//		if((BUCK1_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK1_TICKS+BUCK_WINDOW_TICKS )|| (BUCK2_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK2_TICKS+BUCK_WINDOW_TICKS ) || (BUCK3_TICKS-BUCK_WINDOW_TICKS <  DRIVE_ENCODERS && DRIVE_ENCODERS < BUCK3_TICKS+BUCK_WINDOW_TICKS )) {
-					if(getIRValue() > IR_THRESHOLD) {
-						foundVal = DRIVE_ENCODERS;
-						break;
-					}
-				writeDebugStreamLine("%d", DRIVE_ENCODERS);
-		wait1Msec(5);
-	}
-	writeDebugStreamLine("stopped at%d", DRIVE_ENCODERS);
-	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+1200);
-	stopDrive();
+	//while(DRIVE_ENCODERS < BUCK1_TICKS) {
+	//	_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
+	//	wait1Msec(5);
+	//}
+	//moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+630);
+	//stopDrive();
 
 	//writeDebugStreamLine("foundVal %d", foundVal);
-	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+100+(NINETY_DEGREES/2));
-	wait10Msec(100);
-	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+(NINETY_DEGREES/2));
+
+	//turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+NINETY_DEGREES+400);
+	//runDriveTime(DRIVE_SPEED, 500);
 
 	runArmTime(ARM_SPEED, ARM_TIME);
-	moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+1100);
+	runDriveTime(DRIVE_SPEED, 1100);
+	wait1Msec(300);
 	//runArmTime(-ARM_SPEED, 600);
 	flapOpen();
 	runIntakeTime(INTAKE_SPEED, KICK_TIME);
 	flapClosed();
 	//runArmTime(ARM_SPEED, 600);
-	moveDriveBack(DRIVE_SPEED, DRIVE_ENCODERS-900);
-	runArmTime(-ARM_SPEED, ARM_TIME-200);
-	turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-NINETY_DEGREES+200);
-
-	while(DRIVE_ENCODERS < END_OF_LINE+500)
-	{
-		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-		wait1Msec(5);
-	}
-	stopDrive();
+	runDriveTime(-DRIVE_SPEED, 725);
+	runArmTime(-ARM_SPEED, ARM_TIME-400);
+	turnTime(TURN_SPEED, 825);
+	//turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-(NINETY_DEGREES/2)-100);
 
 	zeroEncoders();
-  turnDriveRightTicks(TURN_SPEED, 600);
-  zeroEncoders();
-	for(int i=1500; i >= 0; i=i-5)
-	{
-		_setDriveMotors(100, 30);
+
+	for (int i=4500; i>=0; i=i-5) {
+		_setDriveMotors(DRIVE_SPEED+40, DRIVE_SPEED-10);
+		_setIntakeMotor(100);
 		wait1Msec(5);
-		//writeDebugStreamLine("Value: %d", i);
 	}
+
 	stopDrive();
-	zeroEncoders();
-	moveDriveTicks(DRIVE_SPEED, 1200);
-	runIntakeTime(-INTAKE_SPEED, 4000);
-	turnDriveLeftTicks(TURN_SPEED,DRIVE_ENCODERS+300);
-	moveDriveBack(DRIVE_SPEED, 1500);
-	stopDrive();
-/*
-	turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS);
-	moveDriveTicks(DRIVE_SPEED, INTERMEDIATE_TICKS);
-	turnDriveRightTicks(TURN_SPEED, NINETY_DEGREES);
-	moveDriveTicks(DRIVE_SPEED, ONTO_BRIDGE_TICKS);
-	*/
+	_setIntakeMotor(0);
+	flapClosed();
+
+	for (int i=750; i>=0; i=i-5) {
+		_setDriveMotors(-DRIVE_SPEED, -DRIVE_SPEED-10);
+		wait1Msec(5);
+	}
+
+	turnTime(TURN_SPEED, 500);
+	runDriveTime(-100, 2500);
 }
