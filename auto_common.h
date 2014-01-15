@@ -67,7 +67,15 @@ void runIntakeTime(int speed, int time);
 //Bodies
 void runDriveTime(int speed, int time) {
 	for (int i=time; i>=0; i=i-5) {
-		_setDriveMotors(speed, speed);
+		if (speed > 0){
+			_setDriveMotors(speed+30, speed);
+		}
+		else if (speed <0) {
+			_setDriveMotors(speed-30, speed);
+		}
+		if(speed == 0) {
+			_setDriveMotors(0,0);
+		}
 		wait1Msec(5);
 	}
 	_setDriveMotors(0,0);

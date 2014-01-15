@@ -75,7 +75,7 @@ int foundVal = BUCK4_TICKS;
 //function prototypes
 
 task main () {
-	//waitForStart();
+	waitForStart();
 	flapClosed();
 
 	zeroEncoders();
@@ -99,16 +99,15 @@ task main () {
 	runIntakeTime(INTAKE_SPEED, KICK_TIME);
 	flapClosed();
 	//runArmTime(ARM_SPEED, 600);
-	runDriveTime(-DRIVE_SPEED, 850);
-	runArmTime(-ARM_SPEED, ARM_TIME-200);
-
-	turnTime(TURN_SPEED, 800);
+	runDriveTime(-DRIVE_SPEED, 725);
+	runArmTime(-ARM_SPEED, ARM_TIME-400);
+	turnTime(TURN_SPEED, 825);
 	//turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-(NINETY_DEGREES/2)-100);
 
 	zeroEncoders();
 
 	for (int i=4500; i>=0; i=i-5) {
-		_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED-10);
+		_setDriveMotors(DRIVE_SPEED+40, DRIVE_SPEED-10);
 		_setIntakeMotor(100);
 		wait1Msec(5);
 	}
@@ -124,5 +123,4 @@ task main () {
 
 	turnTime(TURN_SPEED, 500);
 	runDriveTime(-100, 2500);
-
 }

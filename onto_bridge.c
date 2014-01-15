@@ -35,94 +35,27 @@
 #define DEBUGGER writeDebugStreamLine
 static const bool USE_LOG_SCALE=true;
 
-#define FLAG_SPEED -100
+#define FLAG_SPEED 100
 
 #define SERVO_HANG_POSITION 255
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "initialize.h"
 
+#include "common.h"
 #include "events.h" //Order is important here. This must be included above poll_joystick
 #include "poll_joystick.h"
 #include "auto_common.h"
-#include "drivers/hitechnic-irseeker-v2.h"
 
-//definitions
-#define DRIVE_SPEED 40
-#define TURN_SPEED 60
-#define ARM_SPEED 100
-#define INTAKE_SPEED -30
+//Auto definitions
+#define DRIVE_SPEED 90
+#define TURN_SPEED 50
+#define ARM_SPEED 75
+#define INTAKE_SPEED 75
 
-#define FORTY_FIVE_DEGREES 570
-#define NINETY_DEGREES 1370
+#define TO_RAMP_TIME 3500
 
-#define BUCK1_TICKS 375
-#define BUCK2_TICKS 1700
-#define BUCK3_TICKS 3750
-#define BUCK4_TICKS 5200
-#define BUCK_WINDOW_TICKS 40
-
-#define ARM_TIME 2400
-#define KICK_TIME 1000
-
-#define END_OF_LINE 5300
-#define INTERMEDIATE_TICKS 1000
-#define ONTO_BRIDGE_TICKS 3000
-
-#define IR_THRESHOLD 80
-
-int foundVal = BUCK4_TICKS;
-//function prototypes
-
-task main () {
- 	waitForStart();
-	flapClosed();
-
-	zeroEncoders();
-	//while(DRIVE_ENCODERS < BUCK1_TICKS) {
-	//	_setDriveMotors(DRIVE_SPEED, DRIVE_SPEED);
-	//	wait1Msec(5);
-	//}
-	//moveDriveTicks(DRIVE_SPEED, DRIVE_ENCODERS+630);
-	//stopDrive();
-
-	//writeDebugStreamLine("foundVal %d", foundVal);
-
-	//turnDriveRightTicks(TURN_SPEED, DRIVE_ENCODERS+NINETY_DEGREES+400);
-	//runDriveTime(DRIVE_SPEED, 500);
-
-	runArmTime(ARM_SPEED, ARM_TIME);
-	runDriveTime(DRIVE_SPEED, 1100);
-	wait1Msec(300);
-	//runArmTime(-ARM_SPEED, 600);
-	flapOpen();
-	runIntakeTime(INTAKE_SPEED, KICK_TIME);
-	flapClosed();
-
-	//	runArmTime(ARM_SPEED, 600);
-	runDriveTime(-DRIVE_SPEED, 800);
-	runArmTime(-ARM_SPEED, ARM_TIME-400);
-
-	turnTime(-TURN_SPEED, 700);
-	//turnDriveLeftTicks(TURN_SPEED, DRIVE_ENCODERS-(NINETY_DEGREES/2)-100);
-
-	zeroEncoders();
-
-	for (int i=4500; i>=0; i=i-5) {
-		_setDriveMotors(DRIVE_SPEED-5, DRIVE_SPEED);
-		_setIntakeMotor(100);
-		wait1Msec(5);
-	}
-
-	stopDrive();
-	_setIntakeMotor(0);
-	flapClosed();
-
-	for (int i=750; i>=0; i=i-5) {
-		_setDriveMotors(-DRIVE_SPEED, -DRIVE_SPEED+5);
-		wait1Msec(5);
-	}
-
-	turnTime(-TURN_SPEED, 500);
-	runDriveTime(-100, 2750);
+task main() {
+	waitForStart();
+	runDriveTime(-(DRIVE_SPEED), TO_RAMP_TIME);
 }
