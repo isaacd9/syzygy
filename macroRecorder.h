@@ -11,6 +11,6 @@ void macroRecorder() {
 
 		timeElapsed = 0; // Reset state
 		lastMotors[0] = getDriveLeft();
-		lastMotors[1]= getDriveRight();
+		lastMotors[1] = getDriveRight();
 	}
 }
